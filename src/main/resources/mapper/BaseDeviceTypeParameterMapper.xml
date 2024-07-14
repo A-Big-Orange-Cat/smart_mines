@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.BaseDeviceTypeParameterMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter">
+            <id property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeId" column="base_device_type_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterName" column="base_device_type_parameter_name" jdbcType="VARCHAR"/>
+            <result property="baseDeviceTypeParameterCode" column="base_device_type_parameter_code" jdbcType="VARCHAR"/>
+            <result property="valueType" column="value_type" jdbcType="OTHER"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="proportion" column="proportion" jdbcType="INTEGER"/>
+            <result property="rw" column="rw" jdbcType="OTHER"/>
+            <result property="isInstantaneous" column="is_instantaneous" jdbcType="OTHER"/>
+            <result property="type" column="type" jdbcType="OTHER"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="info" column="info" jdbcType="VARCHAR"/>
+            <result property="sortNumber" column="sort_number" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        base_device_type_parameter_id,base_device_type_id,base_device_type_parameter_name,
+        base_device_type_parameter_code,value_type,address,
+        proportion,rw,isInstantaneous,type,
+        unit,info,sort_number
+    </sql>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.SystemMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.System">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="cpuId" column="cpu_id" jdbcType="VARCHAR"/>
+            <result property="mapPath" column="map_path" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,cpu_id,
+        map_path
+    </sql>
+</mapper>

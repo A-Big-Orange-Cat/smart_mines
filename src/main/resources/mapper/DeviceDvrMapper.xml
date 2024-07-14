@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.DeviceDvrMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.DeviceDvr">
+            <id property="dvrId" column="dvr_id" jdbcType="INTEGER"/>
+            <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+            <result property="ip" column="ip" jdbcType="VARCHAR"/>
+            <result property="port" column="port" jdbcType="INTEGER"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        dvr_id,device_id,ip,
+        port,user_name,password
+    </sql>
+</mapper>

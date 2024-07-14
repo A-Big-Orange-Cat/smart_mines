@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.LogOperationMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.LogOperation">
+            <id property="logOperationId" column="log_operation_id" jdbcType="BIGINT"/>
+            <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="controlMode" column="control_mode" jdbcType="OTHER"/>
+            <result property="operationValue" column="operation_value" jdbcType="VARCHAR"/>
+            <result property="operationResult" column="operation_result" jdbcType="OTHER"/>
+            <result property="timeMillis" column="time_millis" jdbcType="BIGINT"/>
+    </resultMap>
+    <resultMap id="LogOperationsResultMap" type="com.jkzz.smart_mines.pojo.vo.LogOperationVO">
+        <id property="logOperationId" column="log_operation_id" jdbcType="BIGINT"/>
+        <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+        <result property="controlMode" column="control_mode" jdbcType="OTHER"/>
+        <result property="operationValue" column="operation_value" jdbcType="VARCHAR"/>
+        <result property="operationResult" column="operation_result" jdbcType="OTHER"/>
+        <result property="timeMillis" column="time_millis" jdbcType="BIGINT"/>
+        <association property="baseDeviceTypeParameter" javaType="com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter">
+            <id property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeId" column="base_device_type_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterName" column="base_device_type_parameter_name" jdbcType="VARCHAR"/>
+            <result property="baseDeviceTypeParameterCode" column="base_device_type_parameter_code" jdbcType="VARCHAR"/>
+            <result property="valueType" column="value_type" jdbcType="OTHER"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="proportion" column="proportion" jdbcType="INTEGER"/>
+            <result property="rw" column="rw" jdbcType="OTHER"/>
+            <result property="isInstantaneous" column="is_instantaneous" jdbcType="OTHER"/>
+            <result property="type" column="type" jdbcType="OTHER"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="info" column="info" jdbcType="VARCHAR"/>
+            <result property="sortNumber" column="sort_number" jdbcType="INTEGER"/>
+        </association>
+        <association property="user" javaType="com.jkzz.smart_mines.pojo.domain.User">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userTrueName" column="user_true_name" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="role" column="role" jdbcType="OTHER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        log_operation_id,device_id,base_device_parameter_id,
+        user_id,control_mode,operation_value,operation_result,
+        time_millis
+    </sql>
+    <sql id="Log_Operation_Column_List">
+        o.log_operation_id,o.device_id,o.control_mode,o.operation_value,o.operation_result,o.time_millis,
+        p.base_device_type_parameter_id,p.base_device_type_id,p.base_device_type_parameter_name,p.base_device_type_parameter_code,
+        p.value_type,p.address,p.proportion,p.rw,p.is_instantaneous,p.type,p.unit,p.info,p.sort_number,
+        u.user_id,u.user_name,u.user_true_name,u.role
+    </sql>
+
+    <select id="queryLogOperationsPage" resultMap="LogOperationsResultMap">
+        select
+        *
+        from (
+        select
+        <include refid="Log_Operation_Column_List"/>
+        from log_operation as o
+        left join base_device_type_parameter as p
+        on o.base_device_type_parameter_id = p.base_device_type_parameter_id
+        left join user as u
+        on o.user_id = u.user_id
+        ) as result
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.LogSignalMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.LogSignal">
+            <id property="logSignalId" column="log_signal_id" jdbcType="BIGINT"/>
+            <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="signalValue" column="signal_value" jdbcType="VARCHAR"/>
+            <result property="timeMillis" column="time_millis" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        log_signal_id,device_id,base_device_parameter_id,
+        signal_value,time_millis
+    </sql>
+
+    <select id="queryLogSignalCurve" resultType="com.jkzz.smart_mines.pojo.vo.LogSignalCurveVO">
+        select signal_value,time_millis
+        from log_signal
+                 ${ew.customSqlSegment}
+    </select>
+</mapper>

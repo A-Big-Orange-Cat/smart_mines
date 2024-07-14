@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.DeviceTypeRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.DeviceTypeRelation">
+            <id property="deviceTypeId" column="device_type_id" jdbcType="INTEGER"/>
+            <id property="baseDeviceTypeId" column="base_device_type_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        device_type_id,base_device_type_id
+    </sql>
+</mapper>

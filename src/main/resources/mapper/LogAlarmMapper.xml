@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jkzz.smart_mines.mapper.LogAlarmMapper">
+
+    <resultMap id="BaseResultMap" type="com.jkzz.smart_mines.pojo.domain.LogAlarm">
+            <id property="logAlarmId" column="log_alarm_id" jdbcType="BIGINT"/>
+            <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="alarmValue" column="alarm_value" jdbcType="VARCHAR"/>
+            <result property="timeMillis" column="time_millis" jdbcType="BIGINT"/>
+    </resultMap>
+    <resultMap id="LogAlarmsResultMap" type="com.jkzz.smart_mines.pojo.vo.LogAlarmVO">
+        <id property="logAlarmId" column="log_alarm_id" jdbcType="BIGINT"/>
+        <result property="deviceId" column="device_id" jdbcType="INTEGER"/>
+        <result property="alarmValue" column="alarm_value" jdbcType="VARCHAR"/>
+        <result property="timeMillis" column="time_millis" jdbcType="BIGINT"/>
+        <association property="baseDeviceTypeParameter" javaType="com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter">
+            <id property="baseDeviceTypeParameterId" column="base_device_type_parameter_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeId" column="base_device_type_id" jdbcType="INTEGER"/>
+            <result property="baseDeviceTypeParameterName" column="base_device_type_parameter_name" jdbcType="VARCHAR"/>
+            <result property="baseDeviceTypeParameterCode" column="base_device_type_parameter_code" jdbcType="VARCHAR"/>
+            <result property="valueType" column="value_type" jdbcType="OTHER"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="proportion" column="proportion" jdbcType="INTEGER"/>
+            <result property="rw" column="rw" jdbcType="OTHER"/>
+            <result property="isInstantaneous" column="is_instantaneous" jdbcType="OTHER"/>
+            <result property="type" column="type" jdbcType="OTHER"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="info" column="info" jdbcType="VARCHAR"/>
+            <result property="sortNumber" column="sort_number" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        log_alarm_id,device_id,base_device_parameter_id,
+        alarm_value,time_millis
+    </sql>
+    <sql id="Log_Alarm_Column_List">
+        a.log_alarm_id,a.device_id,a.alarm_value,a.time_millis,
+        p.base_device_type_parameter_id,p.base_device_type_id,p.base_device_type_parameter_name,p.base_device_type_parameter_code,
+        p.value_type,p.address,p.proportion,p.rw,p.is_instantaneous,p.type,p.unit,p.info,p.sort_number
+    </sql>
+
+    <select id="queryLogAlarmsPage" resultMap="LogAlarmsResultMap">
+        select
+        *
+        from (
+        select
+        <include refid="Log_Alarm_Column_List"/>
+        from log_alarm as a
+        left join base_device_type_parameter as p
+        on a.base_device_type_parameter_id = p.base_device_type_parameter_id
+        ) as result
+        ${ew.customSqlSegment}
+    </select>
+</mapper>
