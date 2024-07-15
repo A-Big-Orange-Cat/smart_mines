@@ -24,7 +24,7 @@ export const deviceWrite = async (type, code, val, deviceTypeId, deviceId) => {
           type: 'error'
         });
       }
-    } else {
+    } else if (res.data.code != 401) {
       Message({
         message: res.data.msg,
         type: 'error'
@@ -34,3 +34,41 @@ export const deviceWrite = async (type, code, val, deviceTypeId, deviceId) => {
     console.log(error);
   }
 }
+
+// 公共API调用
+export const callApi = async ( f ) => {
+  console.log('ffff', f);
+  let res = f()
+  console.log('res', res);
+  // if(res.code == 200){
+  //   return res.data
+  // } else if (res.data.code != 401 ) {
+  //   Message({
+  //     message: res.data.msg,
+  //     type: 'error'
+  //   });
+  // }
+}
+
+
+// 获取信息
+export async function getList(params) {
+  try {
+    return await http.post('/getList', params)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function filterResult(res) {
+  if (res.data.code == 200) {
+    return res.data.data
+  } else if (res.data.code != 401) {
+    Message({
+      message: res.data.msg,
+      type: 'error'
+    });
+  }
+}
+
+
