@@ -1,0 +1,125 @@
+.button-blue {
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 5px;
+  background-color: #3bb3e0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  padding: 3px 8px;
+  border-left: solid 1px #2ab7ec;
+  background-image: linear-gradient(bottom, rgb(44, 160, 202) 0%, rgb(62, 184, 229) 100%);
+  background-image: -o-linear-gradient(bottom, rgb(44, 160, 202) 0%, rgb(62, 184, 229) 100%);
+  background-image: -moz-linear-gradient(bottom, rgb(44, 160, 202) 0%, rgb(62, 184, 229) 100%);
+  background-image: -webkit-linear-gradient(bottom, rgb(44, 160, 202) 0%, rgb(62, 184, 229) 100%);
+  background-image: -ms-linear-gradient(bottom, rgb(44, 160, 202) 0%, rgb(62, 184, 229) 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(44, 160, 202)), color-stop(1,
+        rgb(62, 184, 229)));
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #000;
+  -moz-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #000;
+  -o-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #000;
+  box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #000;
+}
+
+.button-blue:active {
+  top: 3px;
+  background-image: linear-gradient(bottom, rgb(62, 184, 229) 0%, rgb(44, 160, 202) 100%);
+  background-image: -o-linear-gradient(bottom, rgb(62, 184, 229) 0%, rgb(44, 160, 202) 100%);
+  background-image: -moz-linear-gradient(bottom, rgb(62, 184, 229) 0%, rgb(44, 160, 202) 100%);
+  background-image: -webkit-linear-gradient(bottom, rgb(62, 184, 229) 0%, rgb(44, 160, 202) 100%);
+  background-image: -ms-linear-gradient(bottom, rgb(62, 184, 229) 0%, rgb(44, 160, 202) 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(62, 184, 229)), color-stop(1,
+        rgb(44, 160, 202)));
+  -webkit-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #000;
+  -moz-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #000;
+  -o-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #000;
+  box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #000;
+}
+
+.button-blue:active::before {
+  top: -3px;
+  -webkit-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 1px 1px 0px 0px #044a64, 2px 2px 0px 0px #044a64, 2px 5px 0px 0px #044a64, 6px 4px 2px #0b698b, 0px 10px 5px #000;
+  -moz-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 1px 1px 0px 0px #044a64, 2px 2px 0px 0px #044a64,
+    2px 5px 0px 0px #044a64, 6px 4px 2px #0b698b, 0px 10px 5px #000;
+  -o-box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 1px 1px 0px 0px #044a64, 2px 2px 0px 0px #044a64,
+    2px 5px 0px 0px #044a64, 6px 4px 2px #0b698b, 0px 10px 5px #000;
+  box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 1px 1px 0px 0px #044a64, 2px 2px 0px 0px #044a64, 2px 5px 0px 0px #044a64, 6px 4px 2px #0b698b, 0px 10px 5px #000;
+}
+
+.button-orange {
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 5px;
+  background-color: #e0773b;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  padding: 4px 8px;
+  border-left: solid 1px #ec782a;
+  background-image: linear-gradient(bottom, rgb(202, 115, 44) 0%, rgb(229, 137, 62) 100%);
+  background-image: -o-linear-gradient(bottom, rgb(202, 115, 44) 0%, rgb(229, 137, 62) 100%);
+  background-image: -moz-linear-gradient(bottom, rgb(202, 115, 44) 0%, rgb(229, 137, 62) 100%);
+  background-image: -webkit-linear-gradient(bottom, rgb(202, 115, 44) 0%, rgb(229, 137, 62) 100%);
+  background-image: -ms-linear-gradient(bottom, rgb(202, 115, 44) 0%, rgb(229, 137, 62) 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(202, 115, 44)), color-stop(1,
+        rgb(229, 137, 62)));
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #854215, 0px 10px 5px #000;
+  ;
+  -moz-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #854215, 0px 10px 5px #000;
+  ;
+  -o-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #854215, 0px 10px 5px #000;
+  ;
+  box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #854215, 0px 10px 5px #000;
+  ;
+}
+
+.button-orange:active {
+  top: 3px;
+  background-image: linear-gradient(bottom, rgb(229, 137, 62) 0%, rgb(202, 115, 44) 100%);
+  background-image: -o-linear-gradient(bottom, rgb(229, 137, 62) 0%, rgb(202, 115, 44) 100%);
+  background-image: -moz-linear-gradient(bottom, rgb(229, 137, 62) 0%, rgb(202, 115, 44) 100%);
+  background-image: -webkit-linear-gradient(bottom, rgb(229, 137, 62) 0%, rgb(202, 115, 44) 100%);
+  background-image: -ms-linear-gradient(bottom, rgb(229, 137, 62) 0%, rgb(202, 115, 44) 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgb(229, 137, 62)), color-stop(1,
+        rgb(202, 115, 44)));
+  -webkit-box-shadow: inset 0px 1px 0px #ec782a, 0px 2px 0px 0px #854215, 0px 5px 3px #000;
+  -moz-box-shadow: inset 0px 1px 0px #ec782a, 0px 2px 0px 0px #854215, 0px 5px 3px #000;
+  -o-box-shadow: inset 0px 1px 0px #ec782a, 0px 2px 0px 0px #854215, 0px 5px 3px #000;
+  box-shadow: inset 0px 1px 0px #ec782a, 0px 2px 0px 0px #854215, 0px 5px 3px #000;
+}
+
+.button-orange:active::before {
+  top: -3px;
+  -webkit-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #3a1c03, 1px 1px 0px 0px #642f04, 2px 2px 0px 0px #642f04, 2px 5px 0px 0px #642f04, 6px 4px 2px #8b620b, 0px 10px 5px #000;
+  -moz-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #3a1c03, 1px 1px 0px 0px #642f04, 2px 2px 0px 0px #642f04, 2px 5px 0px 0px #642f04, 6px 4px 2px #8b620b, 0px 10px 5px #000;
+  -o-box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #3a1c03, 1px 1px 0px 0px #642f04, 2px 2px 0px 0px #642f04, 2px 5px 0px 0px #642f04, 6px 4px 2px #8b620b, 0px 10px 5px #000;
+  box-shadow: inset 0px 1px 0px #ec782a, 0px 5px 0px 0px #3a1c03, 1px 1px 0px 0px #642f04, 2px 2px 0px 0px #642f04, 2px 5px 0px 0px #642f04, 6px 4px 2px #8b620b, 0px 10px 5px #000;
+}
