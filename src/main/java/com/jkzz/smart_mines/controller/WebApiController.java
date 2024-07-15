@@ -10,7 +10,7 @@ import com.jkzz.smart_mines.service.BaseDeviceTypeParameterService;
 import com.jkzz.smart_mines.service.DeviceService;
 import com.jkzz.smart_mines.service.DeviceTypeRelationService;
 import com.jkzz.smart_mines.service.MonitorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,19 +25,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/webApi")
 public class WebApiController {
 
-    @Autowired
-    private CommunicationManager communicationManager;
-    @Autowired
-    private DeviceService deviceService;
-    @Autowired
-    private DeviceTypeRelationService deviceTypeRelationService;
-    @Autowired
-    private BaseDeviceTypeParameterService baseDeviceTypeParameterService;
-    @Autowired
-    private MonitorService monitorService;
+    private final CommunicationManager communicationManager;
+
+    private final DeviceService deviceService;
+
+    private final DeviceTypeRelationService deviceTypeRelationService;
+
+    private final BaseDeviceTypeParameterService baseDeviceTypeParameterService;
+
+    private final MonitorService monitorService;
 
     /**
      * 打开设备详情页
@@ -136,10 +136,10 @@ public class WebApiController {
                 .map(monitorManager -> monitorManager.getMonitorMap().get(device.getDeviceId().toString()))
                 .ifPresent(monitor -> {
                     result.put("connStatus", monitor.isConnStatus());
-                    result.put("data", new JSONObject() {{
-                        putAll(monitor.getParameterValueOfSignalMap());
-                        putAll(monitor.getParameterValueOfParaSettingMap());
-                    }});
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.putAll(monitor.getParameterValueOfSignalMap());
+                    jsonObject.putAll(monitor.getParameterValueOfParaSettingMap());
+                    result.put("data", jsonObject);
                     result.put("alarm", monitor.getParameterValueOfAlarmMap());
                 });
         return result;
@@ -147,12 +147,12 @@ public class WebApiController {
 
     private PlcParam getPlcParam(String ip, String code, String value) {
         Device device = deviceService.getDeviceByIp(ip);
+        Map<String, String> codeAndValue = new HashMap<>();
+        codeAndValue.put(code, value);
         return PlcParam.builder()
                 .deviceTypeId(device.getDeviceTypeId())
                 .deviceId(device.getDeviceId())
-                .codesAndValues(new HashMap<String, String>() {{
-                    put(code, value);
-                }})
+                .codesAndValues(codeAndValue)
                 .build();
     }
 

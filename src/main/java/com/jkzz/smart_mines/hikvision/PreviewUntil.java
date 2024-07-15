@@ -27,7 +27,7 @@ public class PreviewUntil {
     /**
      * 异常捕获回调
      */
-    static FExceptionCallBack_Imp fExceptionCallBack;
+    static FExceptionCallBackImp fExceptionCallBack;
     static HCNetSDK hCNetSDK = null;
     static PlayCtrl playControl = null;
     /**
@@ -40,7 +40,7 @@ public class PreviewUntil {
      *
      * @return 是否加载成功
      */
-    private static boolean CreateSDKInstance() {
+    private static boolean createSDKInstance() {
         if (hCNetSDK == null) {
             synchronized (HCNetSDK.class) {
                 String strDllPath = CommonKit.getHikPath();
@@ -49,7 +49,7 @@ public class PreviewUntil {
                     strDllPath = strDllPath + "HCNetSDK.dll";
                     hCNetSDK = (HCNetSDK) Native.loadLibrary(strDllPath, HCNetSDK.class);
                 } catch (Exception ex) {
-                    log.error("loadLibrary: " + strDllPath + " Error: " + ex.getMessage());
+                    log.error("loadLibrary: {},Error:{}", strDllPath, ex.getMessage());
                     return false;
                 }
             }
@@ -62,7 +62,7 @@ public class PreviewUntil {
      *
      * @return 是否加载成功
      */
-    private static boolean CreatePlayInstance() {
+    private static boolean createPlayInstance() {
         if (playControl == null) {
             synchronized (PlayCtrl.class) {
                 String strPlayPath = CommonKit.getHikPath();
@@ -71,7 +71,7 @@ public class PreviewUntil {
                     strPlayPath = strPlayPath + "PlayCtrl.dll";
                     playControl = (PlayCtrl) Native.loadLibrary(strPlayPath, PlayCtrl.class);
                 } catch (Exception ex) {
-                    log.error("loadLibrary: " + strPlayPath + " Error: " + ex.getMessage());
+                    log.error("loadLibrary: {},Error:{}", strPlayPath, ex.getMessage());
                     return false;
                 }
             }
@@ -91,7 +91,7 @@ public class PreviewUntil {
             LibLoaderUtil.loader("lib");
         } catch (IOException e) {
             LibLoaderUtil.loadStatus = false;
-            log.error("加载lib文件出现异常，原因：" + e.getMessage());
+            log.error("加载lib文件出现异常，原因：{}", e.getMessage());
         }
         if (!LibLoaderUtil.loadStatus) {
             log.error("加载lib文件失败");
@@ -99,22 +99,22 @@ public class PreviewUntil {
         }
         // SDK初始化，一个程序只需要调用一次
         if (hCNetSDK == null && playControl == null) {
-            if (!CreateSDKInstance()) {
+            if (!createSDKInstance()) {
                 log.error("加载SDK失败");
                 return;
             }
-            if (!CreatePlayInstance()) {
+            if (!createPlayInstance()) {
                 log.error("加载PlayCtrl失败");
                 return;
             }
         }
 
         //log.info("海康威视SDK dll加载成功");
-        log.info("海康威视SDK初始化" + (hCNetSDK.NET_DVR_Init() ? "成功" : "失败"));
+        log.info("海康威视SDK初始化{}", hCNetSDK.NET_DVR_Init() ? "成功" : "失败");
 
         // 异常消息回调
         if (fExceptionCallBack == null) {
-            fExceptionCallBack = new FExceptionCallBack_Imp();
+            fExceptionCallBack = new FExceptionCallBackImp();
         }
         if (!hCNetSDK.NET_DVR_SetExceptionCallBack_V30(0, 0, fExceptionCallBack, null)) {
             return;
@@ -136,7 +136,7 @@ public class PreviewUntil {
             return;
         }
         // 登录
-        login_V40(dvr);
+        loginV40(dvr);
         playView(dvr);
     }
 
@@ -145,7 +145,7 @@ public class PreviewUntil {
      *
      * @param dvrs 摄像头信息列表：ip地址，端口号，用户名，密码
      */
-    public static void login_V40(List<DeviceDvr> dvrs) {
+    public static void loginV40(List<DeviceDvr> dvrs) {
         if (!isInit) {
             return;
         }
@@ -157,9 +157,9 @@ public class PreviewUntil {
             /*Integer lUserId = MyBlockingQueue.findUserIdByIp(dvr.getIp());
             if (null != lUserId) {
                 // 自动判断是否在预览并退出
-                PreverViewUntil.logoutPlayView(dvr.getLUserId());
+                PreviewUntil.logoutPlayView(dvr.getLUserId());
             }*/
-            login_V40(dvr);
+            loginV40(dvr);
         }
     }
 
@@ -168,40 +168,40 @@ public class PreviewUntil {
      *
      * @param dvr 摄像头信息：ip地址，端口号，用户名，密码
      */
-    private static void login_V40(DeviceDvr dvr) {
+    private static void loginV40(DeviceDvr dvr) {
         if (!isInit) {
             return;
         }
         // 登录设备，每一台设备分别登录; 登录句柄是唯一的，可以区分设备
         // 设备登录信息
-        HCNetSDK.NET_DVR_USER_LOGIN_INFO m_strLoginInfo = new HCNetSDK.NET_DVR_USER_LOGIN_INFO();
+        HCNetSDK.NET_DVR_USER_LOGIN_INFO mStrLoginInfo = new HCNetSDK.NET_DVR_USER_LOGIN_INFO();
         // 设备信息
-        HCNetSDK.NET_DVR_DEVICEINFO_V40 m_strDeviceInfo = new HCNetSDK.NET_DVR_DEVICEINFO_V40();
+        HCNetSDK.NET_DVR_DEVICEINFO_V40 mStrDeviceInfo = new HCNetSDK.NET_DVR_DEVICEINFO_V40();
 
         // 设备ip地址
-        String m_sDeviceIP = dvr.getIp();
-        m_strLoginInfo.sDeviceAddress = new byte[HCNetSDK.NET_DVR_DEV_ADDRESS_MAX_LEN];
-        System.arraycopy(m_sDeviceIP.getBytes(), 0, m_strLoginInfo.sDeviceAddress, 0, m_sDeviceIP.length());
+        String mSDeviceIp = dvr.getIp();
+        mStrLoginInfo.sDeviceAddress = new byte[HCNetSDK.NET_DVR_DEV_ADDRESS_MAX_LEN];
+        System.arraycopy(mSDeviceIp.getBytes(), 0, mStrLoginInfo.sDeviceAddress, 0, mSDeviceIp.length());
 
         // 设备用户名
-        String m_sUsername = dvr.getUserName();
-        m_strLoginInfo.sUserName = new byte[HCNetSDK.NET_DVR_LOGIN_USERNAME_MAX_LEN];
-        System.arraycopy(m_sUsername.getBytes(), 0, m_strLoginInfo.sUserName, 0, m_sUsername.length());
+        String mSUsername = dvr.getUserName();
+        mStrLoginInfo.sUserName = new byte[HCNetSDK.NET_DVR_LOGIN_USERNAME_MAX_LEN];
+        System.arraycopy(mSUsername.getBytes(), 0, mStrLoginInfo.sUserName, 0, mSUsername.length());
 
         // 设备密码
-        String m_sPassword = dvr.getPassword();
-        m_strLoginInfo.sPassword = new byte[HCNetSDK.NET_DVR_LOGIN_PASSWD_MAX_LEN];
-        System.arraycopy(m_sPassword.getBytes(), 0, m_strLoginInfo.sPassword, 0, m_sPassword.length());
+        String mSPassword = dvr.getPassword();
+        mStrLoginInfo.sPassword = new byte[HCNetSDK.NET_DVR_LOGIN_PASSWD_MAX_LEN];
+        System.arraycopy(mSPassword.getBytes(), 0, mStrLoginInfo.sPassword, 0, mSPassword.length());
 
         // SDK端口号
-        m_strLoginInfo.wPort = dvr.getPort().shortValue();
+        mStrLoginInfo.wPort = dvr.getPort().shortValue();
         // 是否异步登录：0- 否，1- 是
-        m_strLoginInfo.bUseAsynLogin = false;
+        mStrLoginInfo.bUseAsynLogin = false;
         // 0- SDK私有协议，1- ISAPI协议
-        m_strLoginInfo.byLoginMode = 0;
-        m_strLoginInfo.write();
+        mStrLoginInfo.byLoginMode = 0;
+        mStrLoginInfo.write();
 
-        int lUserId = hCNetSDK.NET_DVR_Login_V40(m_strLoginInfo, m_strDeviceInfo);
+        int lUserId = hCNetSDK.NET_DVR_Login_V40(mStrLoginInfo, mStrDeviceInfo);
         if (lUserId == -1) {
             String errorStr = dvr.getIp() + "登录失败，错误码为" + hCNetSDK.NET_DVR_GetLastError();
             log.error(errorStr);
@@ -211,21 +211,21 @@ public class PreviewUntil {
             dvr.setLDChannel(-1);
         } else {
             // 这里直接认为登陆成功就能预览吧。。
-            String successStr = m_sDeviceIP + ":设备登录成功! " + "设备序列号:" +
-                    new String(m_strDeviceInfo.struDeviceV30.sSerialNumber).trim();
+            String successStr = mSDeviceIp + ":设备登录成功! " + "设备序列号:" +
+                    new String(mStrDeviceInfo.struDeviceV30.sSerialNumber).trim();
             //log.error(successStr);
             dvr.setLoginStatus("1");
             dvr.setLoginMessage(successStr);
             dvr.setLUserId(lUserId);
             dvr.setLDChannel(1);
-            m_strDeviceInfo.read();
+            mStrDeviceInfo.read();
             // 记录ip已经登录
             // MyBlockingQueue.IpToLUserIdMap.put(dvr.getIp(), dvr.getLUserId());
             // 相机一般只有一个通道号，热成像相机有2个通道号，通道号为1或1,2
             // byStartDChan为IP通道起始通道号, 预览回放NVR的IP通道时需要根据起始通道号进行取值
-            if ((int) m_strDeviceInfo.struDeviceV30.byStartChan == 1 || (int) m_strDeviceInfo.struDeviceV30.byStartChan == 33) {
+            if (mStrDeviceInfo.struDeviceV30.byStartChan == 1 || mStrDeviceInfo.struDeviceV30.byStartChan == 33) {
                 // byStartDChan为IP通道起始通道号, 预览回放NVR的IP通道时需要根据起始通道号进行取值,NVR起始通道号一般是33或者1开始
-                int lDChannel = m_strDeviceInfo.struDeviceV30.byStartChan;
+                int lDChannel = mStrDeviceInfo.struDeviceV30.byStartChan;
                 dvr.setLDChannel(lDChannel);
             }
         }
@@ -241,7 +241,7 @@ public class PreviewUntil {
             return;
         }
         // 预览
-        VidePreview.RealPlay(dvr.getLUserId(), dvr.getLDChannel());
+        VidePreview.realPlay(dvr.getLUserId(), dvr.getLDChannel());
         if (VidePreview.lPlayStatus) {
             dvr.setPlayStatus("1");
             dvr.setPlayMessage("预览请求成功！");
@@ -276,7 +276,7 @@ public class PreviewUntil {
             if (!hCNetSDK.NET_DVR_Logout(lUserId)) {
                 log.error("注销登录失败");
             }
-            log.info("停止预览并退出登录成功");
+            //log.info("停止预览并退出登录成功");
             // 清理数据体
             MyBlockingQueue.clearByLUserId(lUserId);
         }
@@ -317,7 +317,7 @@ public class PreviewUntil {
             try {
                 hikWebSocket.getSession().close();
             } catch (IOException e) {
-                log.error(String.format("socket[%s]关闭失败,原因是：" + e.getMessage(), hikWebSocket.getSession().getId()));
+                log.error("socket[{}]关闭失败,原因是：{}", hikWebSocket.getSession().getId(), e.getMessage());
             }
         }
     }
@@ -341,35 +341,35 @@ public class PreviewUntil {
     @PreDestroy
     public void cleanup() {
         if (null != hCNetSDK) {
-            log.info("SDK反初始化，释放资源" + (hCNetSDK.NET_DVR_Cleanup() ? "成功" : "失败"));
+            log.info("SDK反初始化，释放资源{}", hCNetSDK.NET_DVR_Cleanup() ? "成功" : "失败");
         }
     }
 
     /**
      * 异常信息捕获接受类
      */
-    static class FExceptionCallBack_Imp implements HCNetSDK.FExceptionCallBack {
-        public void invoke(int dwType, int lUserID, int lHandle, Pointer pUser) {
+    static class FExceptionCallBackImp implements HCNetSDK.FExceptionCallBack {
+        public void invoke(int dwType, int lUserId, int lHandle, Pointer pUser) {
             switch (dwType) {
                 case HCNetSDK.EXCEPTION_AUDIOEXCHANGE:      // 语音对讲时网络异常
-                    log.error("用户句柄:" + lUserID + "语音对讲异常");
+                    log.error("用户句柄:{}语音对讲异常", lUserId);
                     break;
                 case HCNetSDK.EXCEPTION_ALARM:              // 报警上传时网络异常
-                    log.error("用户句柄:" + lUserID + "报警上传时网络异常");
+                    log.error("用户句柄:{}报警上传时网络异常", lUserId);
                     break;
                 case HCNetSDK.EXCEPTION_PREVIEW:            // 网络预览时异常
-                    log.error("用户句柄:" + lUserID + "网络预览时异常");
-                    //TODO: 关闭网络预览
+                    log.error("用户句柄:{}网络预览时异常", lUserId);
+                    logoutPlayView(lUserId);
                     break;
                 case HCNetSDK.EXCEPTION_SERIAL:             // 透明通道传输时异常
-                    log.error("用户句柄:" + lUserID + "透明通道传输时异常");
-                    //TODO: 关闭透明通道
+                    log.error("用户句柄:{}透明通道传输时异常", lUserId);
+                    logoutPlayView(lUserId);
                     break;
                 case HCNetSDK.EXCEPTION_RECONNECT:          // 预览时重连
-                    log.error("用户句柄:" + lUserID + "预览时重连");
+                    log.error("用户句柄:{}预览时重连", lUserId);
                     break;
                 default:
-                    log.error("用户句柄:" + lUserID + ",异常事件类型:" + Integer.toHexString(dwType));
+                    log.error("用户句柄:{},异常事件类型:{}", lUserId, Integer.toHexString(dwType));
                     log.error("具体错误参照 SDK网络使用手册中：NET_DVR_SetExceptionCallBack_V30 方法中的异常定义！");
                     break;
             }

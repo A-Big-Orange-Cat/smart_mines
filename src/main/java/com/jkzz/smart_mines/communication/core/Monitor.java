@@ -1,13 +1,12 @@
 package com.jkzz.smart_mines.communication.core;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.manager.MonitorManager;
 import com.jkzz.smart_mines.communication.net.CommunicationNet;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.communication.websocket.MonitorWebSocket;
 import com.jkzz.smart_mines.enumerate.impl.*;
-import com.jkzz.smart_mines.exception.AppException;
 import com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter;
 import com.jkzz.smart_mines.pojo.domain.Device;
 import com.jkzz.smart_mines.service.LogAlarmService;
@@ -19,6 +18,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.TaskScheduler;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -125,7 +125,7 @@ public abstract class Monitor {
      * 开始通讯
      */
     protected void start() {
-        log.info("设备名称：" + device.getDeviceName() + "，ip：" + device.getIp() + "-->初始化完成。");
+        log.info("设备名称：{}，ip：{}-->初始化完成。", device.getDeviceName(), device.getIp());
         simpleResultMap.put("alarm", parameterValueOfAlarmMap);
         resultMap.put("parametersOfSignal", parameterValueOfSignalMap);
         resultMap.put("parametersOfParaSetting", parameterValueOfParaSettingMap);
@@ -207,14 +207,10 @@ public abstract class Monitor {
      * 判断 远程/就地 控制方式
      *
      * @param parameter 参数
-     * @throws AppException 未开启远程控制异常
      */
-    protected void remoteOrLocalControl(BaseDeviceTypeParameter parameter) throws AppException {
-        if (ParameterTypeEnum.COMMAND.equals(parameter.getType())) {
-            if (ControlModeEnum.LOCAL.equals(getControlMode())) {
-                throw new AppException(AppExceptionCodeMsg.PLC_CONTROL_NOT_REMOTE);
-            }
-        }
+    protected void remoteOrLocalControl(BaseDeviceTypeParameter parameter) {
+        VUtil.isTrue(ParameterTypeEnum.COMMAND.equals(parameter.getType()) && ControlModeEnum.LOCAL.equals(getControlMode()))
+                .throwAppException(AppExceptionCodeMsg.PLC_CONTROL_NOT_REMOTE);
     }
 
     /**
@@ -228,8 +224,7 @@ public abstract class Monitor {
     public void remoteOrLocalControl(JSONObject result, BaseDeviceTypeParameter parameter, String value, Integer userId) {
         WriteResult writeResult = writePLC(parameter, value);
         VUtil.handler(writeResult.isSuccess()).handler(() -> {
-            setControlMode(Boolean.parseBoolean(writeResult.getWriteValue()) | "1".equals(writeResult.getWriteValue()) ?
-                    ControlModeEnum.REMOTE : ControlModeEnum.LOCAL);
+            setControlMode(Boolean.parseBoolean(writeResult.getWriteValue()) || "1".equals(writeResult.getWriteValue()) ? ControlModeEnum.REMOTE : ControlModeEnum.LOCAL);
             writeAgain(parameter);
         });
         writeLogDatabase(result, parameter, writeResult, userId);
@@ -267,7 +262,7 @@ public abstract class Monitor {
         WriteResult writeResult;
         switch (parameter.getValueType()) {
             case BOOL:
-                Boolean writeBool = Boolean.parseBoolean(value) | "1".equals(value);
+                Boolean writeBool = Boolean.parseBoolean(value) || "1".equals(value);
                 writeResult = writeBool(parameter.getAddress(), parameter.getBaseDeviceTypeParameterName(), writeBool);
                 writeResult.setWriteValue(String.valueOf(writeBool));
                 break;
@@ -363,7 +358,7 @@ public abstract class Monitor {
      * @param parameter 参数
      * @return 读取结果
      */
-    protected ReadResult<?> readPLC(BaseDeviceTypeParameter parameter) {
+    protected ReadResult<? extends Serializable> readPLC(BaseDeviceTypeParameter parameter) {
         switch (parameter.getValueType()) {
             case BOOL:
                 return readBool(parameter.getAddress());
@@ -427,18 +422,19 @@ public abstract class Monitor {
                         saveLogSignal(device.getDeviceId(), parameter.getBaseDeviceTypeParameterId(), newValue, timeMillis);
                         readPLCAndLogAfter(parameter, newValue, timeMillis);
                     });
+                    break;
                 case PARAMETER_SETTING:
                     // 只有标记的操作参数才保存数据库
-                    VUtil.handler(parameterLogOfOperation.containsKey(parameter.getBaseDeviceTypeParameterCode())).handler(() -> {
-                        // 如果是远程造成的修改就不保存数据库
-                        VUtil.isTrueOrFalse(parameterLogOfOperation.get(parameter.getBaseDeviceTypeParameterCode())).trueOrFalseHandler(
-                                () -> {
-                                    saveLogOperation(device.getDeviceId(), parameter.getBaseDeviceTypeParameterId(), 0, ControlModeEnum.LOCAL, newValue, OperationResultEnum.SUCCESS, timeMillis);
-                                    readPLCAndLogAfter(parameter, newValue, timeMillis);
-                                },
-                                () -> parameterLogOfOperation.replace(parameter.getBaseDeviceTypeParameterCode(), true)
-                        );
-                    });
+                    VUtil.handler(parameterLogOfOperation.containsKey(parameter.getBaseDeviceTypeParameterCode())).handler(() ->
+                            // 如果是远程造成的修改就不保存数据库
+                            VUtil.isTrueOrFalse(parameterLogOfOperation.get(parameter.getBaseDeviceTypeParameterCode())).trueOrFalseHandler(
+                                    () -> {
+                                        saveLogOperation(device.getDeviceId(), parameter.getBaseDeviceTypeParameterId(), 0, ControlModeEnum.LOCAL, newValue, OperationResultEnum.SUCCESS, timeMillis);
+                                        readPLCAndLogAfter(parameter, newValue, timeMillis);
+                                    },
+                                    () -> parameterLogOfOperation.replace(parameter.getBaseDeviceTypeParameterCode(), true)
+                            )
+                    );
                     break;
                 case ALARM:
                     VUtil.handler(!"0".equals(newValue)).handler(() -> {

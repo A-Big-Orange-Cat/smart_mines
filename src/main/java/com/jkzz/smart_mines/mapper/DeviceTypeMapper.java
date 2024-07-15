@@ -13,7 +13,9 @@ import java.util.List;
  * @Entity com.jkzz.smart_mines.pojo.domain.DeviceType
  */
 public interface DeviceTypeMapper extends BaseMapper<DeviceType> {
+
     List<DeviceTypeVO> selectDeviceTypeAndEnabledDeviceCount();
+
 }
 
 

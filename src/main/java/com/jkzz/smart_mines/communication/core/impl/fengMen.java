@@ -1,8 +1,8 @@
 package com.jkzz.smart_mines.communication.core.impl;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.core.Monitor;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.enumerate.impl.ControlModeEnum;
 import com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter;
 import com.jkzz.smart_mines.pojo.domain.LogOperation;

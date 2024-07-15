@@ -2,9 +2,9 @@ package com.jkzz.smart_mines.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson2.JSONObject;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.core.Monitor;
 import com.jkzz.smart_mines.communication.manager.CommunicationManager;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.enumerate.impl.AppExceptionCodeMsg;
 import com.jkzz.smart_mines.exception.AppException;
 import com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter;
@@ -13,19 +13,19 @@ import com.jkzz.smart_mines.service.BaseDeviceTypeParameterService;
 import com.jkzz.smart_mines.service.DeviceTypeRelationService;
 import com.jkzz.smart_mines.service.MonitorService;
 import com.jkzz.smart_mines.utils.VUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MonitorServiceImpl implements MonitorService {
 
-    @Autowired
-    BaseDeviceTypeParameterService baseDeviceTypeParameterService;
-    @Autowired
-    private DeviceTypeRelationService deviceTypeRelationService;
+    private final BaseDeviceTypeParameterService baseDeviceTypeParameterService;
+
+    private final DeviceTypeRelationService deviceTypeRelationService;
 
     @Override
     public JSONObject readParametersOfParaSetting(CommunicationManager communicationManager, PlcParam plcParam) {

@@ -1,7 +1,5 @@
 package com.jkzz.smart_mines.hikvision;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,23 +7,24 @@ import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Slf4j
 public class MyBlockingQueue {
 
-    public static final Map<Integer, HikWebSocket> LUserIdToWebSocketMap = new ConcurrentHashMap<>();
-    public static final Map<Integer, Integer> LPlayIdToLUserIdMap = new ConcurrentHashMap<>();
-    public static final Map<Integer, BlockingQueue<byte[]>> bpMap = new HashMap<>();
+    protected static final Map<Integer, HikWebSocket> LUserIdToWebSocketMap = new ConcurrentHashMap<>();
+    protected static final Map<Integer, Integer> LPlayIdToLUserIdMap = new ConcurrentHashMap<>();
+    protected static final Map<Integer, BlockingQueue<byte[]>> bpMap = new HashMap<>();
+    private MyBlockingQueue() {
+
+    }
 
     /**
      * 通过摄像头用户句柄进行数据清理
      *
      * @param lUserId 用户句柄
      */
-    static public void clearByLUserId(Integer lUserId) {
-        for (Integer key : LPlayIdToLUserIdMap.keySet()) {
-            Integer value = LPlayIdToLUserIdMap.get(key);
-            if (value.equals(lUserId)) {
-                LPlayIdToLUserIdMap.remove(key);
+    public static void clearByLUserId(Integer lUserId) {
+        for (Map.Entry<Integer, Integer> entry : LPlayIdToLUserIdMap.entrySet()) {
+            if (entry.getValue().equals(lUserId)) {
+                LPlayIdToLUserIdMap.remove(entry.getKey());
                 break;
             }
         }
@@ -40,11 +39,10 @@ public class MyBlockingQueue {
      * @param lUserId 用户句柄
      * @return 预览句柄
      */
-    static public Integer findLPlayIdByUserId(Integer lUserId) {
-        for (Integer key : LPlayIdToLUserIdMap.keySet()) {
-            Integer value = LPlayIdToLUserIdMap.get(key);
-            if (value.equals(lUserId)) {
-                return key;
+    public static Integer findLPlayIdByUserId(Integer lUserId) {
+        for (Map.Entry<Integer, Integer> entry : LPlayIdToLUserIdMap.entrySet()) {
+            if (entry.getValue().equals(lUserId)) {
+                return entry.getKey();
             }
         }
         return null;

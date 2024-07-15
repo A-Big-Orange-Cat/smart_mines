@@ -9,7 +9,7 @@ import com.jkzz.smart_mines.verification.group.DeleteGroup;
 import com.jkzz.smart_mines.verification.group.InsertGroup;
 import com.jkzz.smart_mines.verification.group.LoginGroup;
 import com.jkzz.smart_mines.verification.group.UpdateGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +21,11 @@ import java.util.Map;
  * 用户控制器
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     /**
      * 用户PC登录
@@ -36,10 +36,10 @@ public class UserController {
     @PostMapping("/loginPC")
     public Resp<Map<String, Object>> loginPC(@Validated(value = LoginGroup.class) @RequestBody User loginUser) {
         User user = userService.loginPC(loginUser.getUserName(), loginUser.getPassword());
-        return Resp.success(new HashMap<String, Object>() {{
-            put("user", user);
-            put("tokenInfo", StpUtil.getTokenInfo());
-        }});
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("tokenInfo", StpUtil.getTokenInfo());
+        return Resp.success(map);
     }
 
     /**
@@ -51,10 +51,10 @@ public class UserController {
     @PostMapping("/loginAPP")
     public Resp<Map<String, Object>> loginAPP(@Validated(value = LoginGroup.class) @RequestBody User loginUser) {
         User user = userService.loginAPP(loginUser.getUserName(), loginUser.getPassword());
-        return Resp.success(new HashMap<String, Object>() {{
-            put("user", user);
-            put("tokenInfo", StpUtil.getTokenInfo());
-        }});
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("tokenInfo", StpUtil.getTokenInfo());
+        return Resp.success(map);
     }
 
     /**

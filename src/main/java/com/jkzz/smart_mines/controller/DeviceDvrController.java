@@ -9,7 +9,7 @@ import com.jkzz.smart_mines.verification.group.DeleteGroup;
 import com.jkzz.smart_mines.verification.group.InsertGroup;
 import com.jkzz.smart_mines.verification.group.SelectGroup;
 import com.jkzz.smart_mines.verification.group.UpdateGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/hik")
 public class DeviceDvrController {
 
-    @Autowired
-    DeviceDvrService deviceDvrService;
+    private final DeviceDvrService deviceDvrService;
 
     /**
      * 登录并开启预览

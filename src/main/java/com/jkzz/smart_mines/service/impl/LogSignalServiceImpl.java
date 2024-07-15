@@ -9,7 +9,7 @@ import com.jkzz.smart_mines.pojo.vo.LogSignalCurveVO;
 import com.jkzz.smart_mines.service.BaseDeviceTypeParameterService;
 import com.jkzz.smart_mines.service.DeviceTypeRelationService;
 import com.jkzz.smart_mines.service.LogSignalService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,17 +21,15 @@ import java.util.Optional;
  * @createDate 2024-07-01 13:59:38
  */
 @Service
+@RequiredArgsConstructor
 public class LogSignalServiceImpl extends ServiceImpl<LogSignalMapper, LogSignal>
         implements LogSignalService {
 
-    @Autowired
-    private LogSignalMapper logSignalMapper;
+    private final LogSignalMapper logSignalMapper;
 
-    @Autowired
-    private DeviceTypeRelationService deviceTypeRelationService;
+    private final DeviceTypeRelationService deviceTypeRelationService;
 
-    @Autowired
-    private BaseDeviceTypeParameterService baseDeviceTypeParameterService;
+    private final BaseDeviceTypeParameterService baseDeviceTypeParameterService;
 
     @Override
     public void insert(Integer deviceId, Integer baseDeviceTypeParameterId, String signalValue, long timeMillis) {

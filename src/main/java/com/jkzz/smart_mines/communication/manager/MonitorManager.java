@@ -36,51 +36,48 @@ public class MonitorManager {
      * 监视器的集合
      */
     private final Map<String, Monitor> monitorMap = new ConcurrentHashMap<>();
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
+    private final CommunicationManager communicationManager;
+    private final LogAlarmService logAlarmService;
+    private final LogOperationService logOperationService;
+    private final LogSignalService logSignalService;
     @Resource(name = "commThreadPoolExecutor")
     private TaskScheduler commThreadPoolExecutor;
-    @Autowired
-    private LogAlarmService logAlarmService;
-    @Autowired
-    private LogOperationService logOperationService;
-    @Autowired
-    private LogSignalService logSignalService;
     @Value("${time.fixedRate.read}")
     private int timeInterval;
-    /**
-     * 通讯管理者对象
-     */
-    private CommunicationManager communicationManager;
     /**
      * 通讯协议
      */
     private CommunicationProtocolEnum communicationProtocol;
-
     /**
      * “信号”参数列表
      */
     private List<BaseDeviceTypeParameter> parametersOfSignal;
-
     /**
      * “操作指令”参数map
      */
     private Map<String, BaseDeviceTypeParameter> parametersOfCommand;
-
     /**
      * “参数设置“参数列表
      */
     private Map<String, BaseDeviceTypeParameter> parametersOfParaSetting;
-
     /**
      * “报警“参数列表
      */
     private List<BaseDeviceTypeParameter> parametersOfAlarm;
-
     /**
      * 设备类型参数map
      */
     private Map<String, DeviceTypeParameter> deviceTypeParameters;
+
+    @Autowired
+    public MonitorManager(ApplicationContext context, CommunicationManager communicationManager, LogAlarmService logAlarmService, LogOperationService logOperationService, LogSignalService logSignalService) {
+        this.context = context;
+        this.communicationManager = communicationManager;
+        this.logAlarmService = logAlarmService;
+        this.logOperationService = logOperationService;
+        this.logSignalService = logSignalService;
+    }
 
     @Async("commThreadPoolExecutor")
     public void createMonitor(Device device) {

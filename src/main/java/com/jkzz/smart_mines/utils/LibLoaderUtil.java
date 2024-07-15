@@ -13,6 +13,10 @@ import java.util.jar.JarFile;
 @Slf4j
 public final class LibLoaderUtil {
 
+    private LibLoaderUtil() {
+
+    }
+
     public static boolean loadStatus = true;
 
     /**
@@ -20,7 +24,7 @@ public final class LibLoaderUtil {
      *
      * @param dirPath 需要扫描的文件路径，项目下的相对路径
      */
-    public synchronized static void loader(String dirPath) throws IOException {
+    public static synchronized void loader(String dirPath) throws IOException {
         Enumeration<URL> dir = Thread.currentThread().getContextClassLoader().getResources(dirPath);
         // 获取操作系统类型
         String systemType = System.getProperty("os.name");

@@ -11,7 +11,7 @@ import com.jkzz.smart_mines.mapper.DeviceMapper;
 import com.jkzz.smart_mines.pojo.domain.Device;
 import com.jkzz.smart_mines.service.DeviceService;
 import com.jkzz.smart_mines.utils.VUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,11 +24,11 @@ import java.util.Optional;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device>
         implements DeviceService {
 
-    @Autowired
-    private DeviceMapper deviceMapper;
+    private final DeviceMapper deviceMapper;
 
     @Override
     public void insert(Device device) {

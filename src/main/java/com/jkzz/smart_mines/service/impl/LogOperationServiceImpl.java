@@ -13,7 +13,7 @@ import com.jkzz.smart_mines.pojo.domain.LogOperation;
 import com.jkzz.smart_mines.pojo.qo.LogQO;
 import com.jkzz.smart_mines.pojo.vo.LogOperationVO;
 import com.jkzz.smart_mines.service.LogOperationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +25,13 @@ import java.util.stream.Collectors;
  * @createDate 2024-07-01 13:59:38
  */
 @Service
+@RequiredArgsConstructor
 public class LogOperationServiceImpl extends ServiceImpl<LogOperationMapper, LogOperation>
         implements LogOperationService {
 
-    @Autowired
-    LogOperationMapper logOperationMapper;
+    private final LogOperationMapper logOperationMapper;
 
-    @Autowired
-    BaseDeviceTypeParameterMapper baseDeviceTypeParameterMapper;
+    private final BaseDeviceTypeParameterMapper baseDeviceTypeParameterMapper;
 
     @Override
     public void insert(Integer deviceId, Integer baseDeviceTypeParameterId, Integer userId, ControlModeEnum controlMode, String operationValue, OperationResultEnum operationResult, long timeMillis) {

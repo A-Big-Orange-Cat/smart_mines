@@ -1,10 +1,9 @@
 package com.jkzz.smart_mines.config;
 
 import com.jkzz.smart_mines.communication.manager.CommunicationManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -17,17 +16,14 @@ import java.net.URLDecoder;
 
 @Slf4j
 @Configuration
-@AutoConfigureAfter(DataSource.class) //DataSource创建完后才初始化此类
+@RequiredArgsConstructor
 public class H2DataSourceConfig {
 
-    @Autowired
-    DataSource dataSource;
-    @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
-    private CommunicationManager communicationManager;
+    private final DataSource dataSource;
+    private final ApplicationContext applicationContext;
+    private final CommunicationManager communicationManager;
     // 初始化sql
-    @Value("${spring.datasource.datasoursename}")
+    @Value("${spring.datasource.datasource_name}")
     private String schema;
 
     @PostConstruct
@@ -37,13 +33,15 @@ public class H2DataSourceConfig {
         // 初始化本地数据库
         if (!f.exists()) {
             log.info("------------------------------初始化h2数据------------------------------");
-            if (!f.getParentFile().exists()) {
-                f.getParentFile().mkdirs();
+            if (!f.getParentFile().exists() && !f.getParentFile().mkdirs()) {
+                log.error("创建h2标识文件smart_mines.lock父目录失败");
             }
-            f.createNewFile();
+            if (!f.createNewFile()) {
+                log.error("创建h2标识文件smart_mines.lock失败");
+            }
             // 加载资源文件
             Resource resource = applicationContext.getResource("classpath:db/" + schema + ".sql");
-            log.info("数据库初始化路径" + URLDecoder.decode(resource.getURL().getPath(), "utf-8"));
+            log.info("数据库初始化路径{}", URLDecoder.decode(resource.getURL().getPath(), "utf-8"));
             // 手动执行SQL语句
             ScriptUtils.executeSqlScript(dataSource.getConnection(), resource);
         }

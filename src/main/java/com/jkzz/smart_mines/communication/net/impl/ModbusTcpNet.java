@@ -1,9 +1,9 @@
 package com.jkzz.smart_mines.communication.net.impl;
 
 import com.jkzz.smart_mines.communication.HslCommunication.Core.Types.OperateResult;
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.net.CommunicationNet;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.utils.CUtil;
 import com.jkzz.smart_mines.utils.VUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +61,8 @@ public class ModbusTcpNet implements CommunicationNet {
             OperateResult operateResult = modbusTcpNet.ReadInt16("1");
             VUtil.handler(isConn != operateResult.IsSuccess).handler(() -> {
                 VUtil.isTrueOrFalse(operateResult.IsSuccess).trueOrFalseHandler(
-                        () -> log.info("ModbusTcpNet长连接设置成功，ip：" + modbusTcpNet.getIpAddress()),
-                        () -> log.error("ModbusTcpNet连接失败，ip：" + modbusTcpNet.getIpAddress() + "，信息：" + operateResult.Message)
+                        () -> log.info("ModbusTcpNet长连接设置成功，ip：{}", modbusTcpNet.getIpAddress()),
+                        () -> log.error("ModbusTcpNet连接失败，ip：{}，信息：{}", modbusTcpNet.getIpAddress(), operateResult.Message)
                 );
                 isConn = operateResult.IsSuccess;
             });
@@ -78,7 +78,7 @@ public class ModbusTcpNet implements CommunicationNet {
         VUtil.handler(isConn).handler(() ->
                 VUtil.handler(modbusTcpNet.ConnectClose().IsSuccess).handler(() -> {
                     isConn = false;
-                    log.info("ip：" + modbusTcpNet.getIpAddress() + "----->ModbusTcpNet关闭连接。");
+                    log.info("ip：{}----->ModbusTcpNet关闭连接。", modbusTcpNet.getIpAddress());
                 })
         );
     }

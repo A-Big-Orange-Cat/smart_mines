@@ -2,6 +2,7 @@ package com.jkzz.smart_mines.hikvision;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.ByteByReference;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -11,20 +12,21 @@ import java.util.concurrent.BlockingQueue;
 import static com.jkzz.smart_mines.hikvision.PreviewUntil.hCNetSDK;
 
 @Slf4j
+@Getter
 public class VidePreview {
 
     /**
      * 预览句柄
      */
-    public static int lPlay = -1;
+    protected static int lPlay = -1;
     /**
      * 预览是否成功
      */
-    public static boolean lPlayStatus = false;
+    protected static boolean lPlayStatus = false;
     /**
      * 预览错误信息
      */
-    public static String lPlayErrorMassage = "";
+    protected static String lPlayErrorMassage = "";
     /**
      * 预览回调函数实现
      */
@@ -32,7 +34,10 @@ public class VidePreview {
     /**
      * 裸码流回调函数
      */
-    static fPlayEScallback fPlayescallback;
+    static FPlayEScallback fPlayescallback;
+    private VidePreview() {
+
+    }
 
     /**
      * 预览摄像头
@@ -40,7 +45,7 @@ public class VidePreview {
      * @param lUserId    登录时返回的id
      * @param iChannelNo 通过哪个通道预览
      */
-    public static void RealPlay(Integer lUserId, Integer iChannelNo) {
+    public static void realPlay(Integer lUserId, Integer iChannelNo) {
         if (null == lUserId || null == iChannelNo || lUserId == -1) {
             lPlayStatus = false;
             lPlayErrorMassage = "请先登录";
@@ -79,7 +84,7 @@ public class VidePreview {
         /**
          * 多路视频的pes数据进行缓存，直到某一路视频的RTP包开头进入时进行取出返给前端
          */
-        final Map<Integer, byte[]> EsBytesMap = new HashMap<>();
+        final Map<Integer, byte[]> esBytesMap = new HashMap<>();
 
         /**
          * 预览回调
@@ -100,6 +105,9 @@ public class VidePreview {
                         // 将流写入对应的实体
                         writeESH264(outputData, lRealHandle);
                     }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -114,29 +122,28 @@ public class VidePreview {
             }
             // 当前这个通道的一个Rtp包数据
             byte[] allEsBytes = null;
-            if (!EsBytesMap.containsKey(lRealHandle)) {
-                EsBytesMap.put(lRealHandle, allEsBytes);
+            if (!esBytesMap.containsKey(lRealHandle)) {
+                esBytesMap.put(lRealHandle, allEsBytes);
             } else {
-                allEsBytes = EsBytesMap.get(lRealHandle);
+                allEsBytes = esBytesMap.get(lRealHandle);
             }
 
             if ((outputData[0] & 0xff) == 0x00
                     && (outputData[1] & 0xff) == 0x00
                     && (outputData[2] & 0xff) == 0x01
-                    && (outputData[3] & 0xff) == 0xBA) {
+                    && (outputData[3] & 0xff) == 0xBA
+                    && allEsBytes != null && allEsBytes.length > 0 && MyBlockingQueue.LPlayIdToLUserIdMap.containsKey(lRealHandle)) {
                 // RTP包开头
                 // 一个完整的帧解析完成后将解析的数据放入BlockingQueue,websocket获取后发送给前端
-                if (allEsBytes != null && allEsBytes.length > 0) {
-                    if (MyBlockingQueue.LPlayIdToLUserIdMap.containsKey(lRealHandle)) {
-                        Integer lUserId = MyBlockingQueue.LPlayIdToLUserIdMap.get(lRealHandle);
-                        BlockingQueue<byte[]> blockingQueue = MyBlockingQueue.bpMap.get(lUserId);
-                        // 将当前的某一路视频通道的上一个Rtp包放到队列中去
-                        blockingQueue.offer(allEsBytes);
-                        allEsBytes = null;
-                        // 置空当前通道的RTP包，下次回调就是pes包进行取流追加
-                        EsBytesMap.put(lRealHandle, allEsBytes);
-                    }
+                Integer lUserId = MyBlockingQueue.LPlayIdToLUserIdMap.get(lRealHandle);
+                BlockingQueue<byte[]> blockingQueue = MyBlockingQueue.bpMap.get(lUserId);
+                // 将当前的某一路视频通道的上一个Rtp包放到队列中去
+                if (!blockingQueue.offer(allEsBytes)) {
+                    log.error("将RTP包放到推流队列时失败");
                 }
+                allEsBytes = null;
+                // 置空当前通道的RTP包，下次回调就是pes包进行取流追加
+                esBytesMap.put(lRealHandle, allEsBytes);
             }
 
             // 是00 00 01 eo开头的就是视频的pes包
@@ -160,17 +167,17 @@ public class VidePreview {
                     allEsBytes = newEsBytes;
                 }
                 // 当前视频通道的部分包数据进行缓存
-                EsBytesMap.put(lRealHandle, allEsBytes);
+                esBytesMap.put(lRealHandle, allEsBytes);
             }
         }
     }
 
     //设置裸码流回调函数
-    static class fPlayEScallback implements HCNetSDK.FPlayESCallBack {
+    static class FPlayEScallback implements HCNetSDK.FPlayESCallBack {
         @Override
-        public void invoke(int lPlayHandle, HCNetSDK.NET_DVR_PACKET_INFO_EX struPackInfo, Pointer pUser) {
-            System.out.println("进入码流回调");
-            System.out.println(struPackInfo.dwPacketSize);
+        public void invoke(int lPlayHandle, HCNetSDK.NET_DVR_PACKET_INFO_EX strUPackInfo, Pointer pUser) {
+            log.info("进入码流回调");
+            log.info(String.valueOf(strUPackInfo.dwPacketSize));
 
             /*try {
                 fileLenth += pstruPackInfo.dwPacketSize;

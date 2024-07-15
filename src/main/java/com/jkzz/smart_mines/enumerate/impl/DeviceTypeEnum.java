@@ -1,6 +1,5 @@
 package com.jkzz.smart_mines.enumerate.impl;
 
-import com.jkzz.smart_mines.enumerate.NameValueEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public enum DeviceTypeEnum implements NameValueEnum<Integer> {
+public enum DeviceTypeEnum {
 
     智能风门(1, "fengMen"),
     智能风门_百叶风窗(2, "fengMenBaiYe"),

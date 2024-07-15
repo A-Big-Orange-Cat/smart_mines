@@ -1,9 +1,9 @@
 package com.jkzz.smart_mines.communication.net.impl;
 
 import com.jkzz.smart_mines.communication.HslCommunication.Core.Types.OperateResult;
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.net.CommunicationNet;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.utils.CUtil;
 import com.jkzz.smart_mines.utils.VUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +61,8 @@ public class AllenBradleyNet implements CommunicationNet {
             OperateResult operateResult = abNet.ReadInt16("1");
             VUtil.handler(isConn != operateResult.IsSuccess).handler(() -> {
                 VUtil.isTrueOrFalse(operateResult.IsSuccess).trueOrFalseHandler(
-                        () -> log.info("AllenBradleyNet长连接设置成功，ip：" + abNet.getIpAddress()),
-                        () -> log.error("AllenBradleyNet连接失败，ip：" + abNet.getIpAddress() + "，信息：" + operateResult.Message)
+                        () -> log.info("AllenBradleyNet长连接设置成功，ip：{}", abNet.getIpAddress()),
+                        () -> log.error("AllenBradleyNet连接失败，ip：{}，信息：{}", abNet.getIpAddress(), operateResult.Message)
                 );
                 isConn = operateResult.IsSuccess;
             });
@@ -74,7 +74,7 @@ public class AllenBradleyNet implements CommunicationNet {
         scheduledFuture.cancel(true);
         VUtil.handler(abNet.ConnectClose().IsSuccess).handler(() -> {
             isConn = false;
-            log.info("ip：" + abNet.getIpAddress() + "----->AllenBradleyNet关闭连接。");
+            log.info("ip：{}----->AllenBradleyNet关闭连接。", abNet.getIpAddress());
         });
     }
 

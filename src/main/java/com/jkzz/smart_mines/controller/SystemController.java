@@ -5,7 +5,7 @@ import com.jkzz.smart_mines.pojo.domain.System;
 import com.jkzz.smart_mines.response.Resp;
 import com.jkzz.smart_mines.service.SystemService;
 import com.jkzz.smart_mines.utils.HAUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,14 +20,13 @@ import java.util.Map;
  * 系统控制器
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/system")
 public class SystemController {
 
-    @Autowired
-    ApplicationContext context;
+    private final ApplicationContext context;
 
-    @Autowired
-    SystemService systemService;
+    private final SystemService systemService;
 
     /**
      * 验证是否拥有系统使用权限

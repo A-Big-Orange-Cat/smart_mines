@@ -5,14 +5,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jkzz.smart_mines.enumerate.impl.AppExceptionCodeMsg;
 import com.jkzz.smart_mines.enumerate.impl.RoleEnum;
+import com.jkzz.smart_mines.exception.AppException;
 import com.jkzz.smart_mines.mapper.UserMapper;
 import com.jkzz.smart_mines.pojo.domain.User;
 import com.jkzz.smart_mines.service.UserService;
 import com.jkzz.smart_mines.utils.VUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Administrator
@@ -20,26 +22,20 @@ import java.util.List;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
 
-    @Autowired
-    UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Override
     public User loginPC(String userName, String password) {
-        User user = login(userName, password);
-        StpUtil.login(user.getUserId(), "PC");
-        user.setPassword(null);
-        return user;
+        return login(userName, password, "PC");
     }
 
     @Override
     public User loginAPP(String userName, String password) {
-        User user = login(userName, password);
-        StpUtil.login(user.getUserId(), "APP");
-        user.setPassword(null);
-        return user;
+        return login(userName, password, "APP");
     }
 
     @Override
@@ -61,8 +57,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public void delete(Integer UserId) {
-        VUtil.isTrue(1 != userMapper.deleteById(UserId))
+    public void delete(Integer userId) {
+        VUtil.isTrue(1 != userMapper.deleteById(userId))
                 .throwAppException(AppExceptionCodeMsg.FAILURE_DELETE);
     }
 
@@ -81,10 +77,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return userMapper.selectList(lambdaQueryWrapper);
     }
 
-    private User login(String userName, String password) {
-        User user = selectOneByUserName(userName, null);
-        VUtil.isTrue(null == user || !password.equals(user.getPassword()))
+    private User login(String userName, String password, String device) {
+        User user = Optional.ofNullable(selectOneByUserName(userName, null))
+                .orElseThrow(() -> new AppException(AppExceptionCodeMsg.USER_FILE_LOGIN));
+        VUtil.isTrue(!user.getPassword().equals(password))
                 .throwAppException(AppExceptionCodeMsg.USER_FILE_LOGIN);
+        StpUtil.login(user.getUserId(), device);
+        user.setPassword(null);
         return user;
     }
 

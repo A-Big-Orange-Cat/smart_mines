@@ -58,10 +58,7 @@ public class ThreadPoolConfig implements SchedulingConfigurer {
 
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
 
-        //taskScheduler.setCorePoolSize(corePoolSize);
         taskScheduler.setPoolSize(maxPoolSize);
-        //executor.setKeepAliveSeconds(keepAliveTime);
-        //taskScheduler.setQueueCapacity(queueCapacity);
         taskScheduler.setThreadNamePrefix(THREAD_PREFIX);
         taskScheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         taskScheduler.setDaemon(true);

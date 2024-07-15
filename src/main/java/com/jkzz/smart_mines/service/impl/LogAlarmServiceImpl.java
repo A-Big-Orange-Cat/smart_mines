@@ -9,7 +9,7 @@ import com.jkzz.smart_mines.pojo.domain.LogAlarm;
 import com.jkzz.smart_mines.pojo.qo.LogQO;
 import com.jkzz.smart_mines.pojo.vo.LogAlarmVO;
 import com.jkzz.smart_mines.service.LogAlarmService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,11 +20,11 @@ import java.util.Optional;
  * @createDate 2024-07-01 13:59:38
  */
 @Service
+@RequiredArgsConstructor
 public class LogAlarmServiceImpl extends ServiceImpl<LogAlarmMapper, LogAlarm>
         implements LogAlarmService {
 
-    @Autowired
-    private LogAlarmMapper logAlarmMapper;
+    private final LogAlarmMapper logAlarmMapper;
 
     @Override
     public void insert(int deviceId, int baseDeviceTypeParameterId, String alarmValue) {

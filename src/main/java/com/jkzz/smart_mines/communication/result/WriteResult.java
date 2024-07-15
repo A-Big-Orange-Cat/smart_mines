@@ -1,19 +1,23 @@
-package com.jkzz.smart_mines.communication.Result;
+package com.jkzz.smart_mines.communication.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
 
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
-public class ReadResult<T> implements Serializable {
+public class WriteResult implements Serializable {
 
     private boolean isSuccess;
 
-    private T value;
+    private String parameterName;
+
+    private String writeValue;
 
     private String message;
 

@@ -12,6 +12,10 @@ import java.util.Map;
 
 public final class HAUtil {
 
+    private HAUtil() {
+
+    }
+
     public static Monitor getMonitor(Integer deviceTypeId) {
         DeviceTypeEnum deviceTypeEnum = DeviceTypeEnum.getByValue(deviceTypeId);
         switch (deviceTypeEnum) {
@@ -75,7 +79,7 @@ public final class HAUtil {
             }
             return list;
         }
-        return null;
+        return new ArrayList<>();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jkzz.smart_mines.utils.utilsInterface;
+package com.jkzz.smart_mines.utils.utilsinterface;
 
 public interface HandlerFunction {
 

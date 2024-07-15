@@ -134,7 +134,10 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.jkzz.smart_mines.SmartMinesApplication</mainClass>
-                    <skip>true</skip>
+                    <includeSystemScope>true</includeSystemScope>
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
                 </configuration>
                 <executions>
                     <execution>

@@ -7,7 +7,7 @@ import com.jkzz.smart_mines.pojo.param.PlcParam;
 import com.jkzz.smart_mines.response.Resp;
 import com.jkzz.smart_mines.service.MonitorService;
 import com.jkzz.smart_mines.verification.group.PlcWriteGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
  * PLC通讯控制器
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/monitor")
 public class MonitorController {
 
-    @Autowired
-    CommunicationManager communicationManager;
+    private final CommunicationManager communicationManager;
 
-    @Autowired
-    private MonitorService monitorService;
+    private final MonitorService monitorService;
 
     /**
      * 按设备类型id和设备id查询参数设置的值

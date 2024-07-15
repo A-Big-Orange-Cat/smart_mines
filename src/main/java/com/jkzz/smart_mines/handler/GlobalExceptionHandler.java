@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     @ResponseBody
     public <T> Resp<T> handleRuntimeException(RuntimeException e) {
-        log.error("服务器异常：" + e.getCause().getMessage());
+        log.error("服务器异常：{}", e.getCause().getMessage());
         return Resp.error(500, "服务器异常：" + e.getCause().getMessage());
     }
 

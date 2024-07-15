@@ -7,7 +7,7 @@ import com.jkzz.smart_mines.mapper.DeviceTypeMapper;
 import com.jkzz.smart_mines.pojo.domain.DeviceType;
 import com.jkzz.smart_mines.pojo.vo.DeviceTypeVO;
 import com.jkzz.smart_mines.service.DeviceTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -19,11 +19,11 @@ import java.util.List;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class DeviceTypeServiceImpl extends ServiceImpl<DeviceTypeMapper, DeviceType>
         implements DeviceTypeService {
 
-    @Autowired
-    private DeviceTypeMapper deviceTypeMapper;
+    private final DeviceTypeMapper deviceTypeMapper;
 
     @Override
     public List<DeviceType> queryAll() {

@@ -6,6 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class EnumUtil {
 
+    private EnumUtil() {
+    }
+
     /**
      * 判断枚举值是否存在于指定枚举数组中
      *

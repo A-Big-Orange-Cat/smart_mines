@@ -9,7 +9,7 @@ import com.jkzz.smart_mines.mapper.DeviceTypeParameterMapper;
 import com.jkzz.smart_mines.pojo.domain.DeviceTypeParameter;
 import com.jkzz.smart_mines.service.DeviceTypeParameterService;
 import com.jkzz.smart_mines.utils.VUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class DeviceTypeParameterServiceImpl extends ServiceImpl<DeviceTypeParameterMapper, DeviceTypeParameter>
         implements DeviceTypeParameterService {
 
-    @Autowired
-    private DeviceTypeParameterMapper deviceTypeParameterMapper;
+    private final DeviceTypeParameterMapper deviceTypeParameterMapper;
 
     @Override
     public List<DeviceTypeParameter> queryByDeviceTypeId(Integer deviceTypeId) {

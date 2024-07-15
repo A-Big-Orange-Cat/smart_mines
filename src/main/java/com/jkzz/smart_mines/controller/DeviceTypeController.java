@@ -10,7 +10,7 @@ import com.jkzz.smart_mines.service.DeviceTypeParameterService;
 import com.jkzz.smart_mines.service.DeviceTypeService;
 import com.jkzz.smart_mines.verification.group.SelectGroup;
 import com.jkzz.smart_mines.verification.group.UpdateGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +20,15 @@ import java.util.List;
  * 设备类型控制器
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/deviceType")
 public class DeviceTypeController {
 
-    @Autowired
-    private CommunicationManager communicationManager;
+    private final CommunicationManager communicationManager;
 
-    @Autowired
-    private DeviceTypeService deviceTypeService;
+    private final DeviceTypeService deviceTypeService;
 
-    @Autowired
-    private DeviceTypeParameterService deviceTypeParameterService;
+    private final DeviceTypeParameterService deviceTypeParameterService;
 
     /**
      * 查询所有设备类型

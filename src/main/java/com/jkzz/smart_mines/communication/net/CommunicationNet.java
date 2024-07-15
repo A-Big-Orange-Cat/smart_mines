@@ -1,7 +1,7 @@
 package com.jkzz.smart_mines.communication.net;
 
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 
 public interface CommunicationNet {
 

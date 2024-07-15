@@ -1,9 +1,9 @@
 package com.jkzz.smart_mines.communication.net.impl;
 
 import com.jkzz.smart_mines.communication.HslCommunication.Core.Types.OperateResult;
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
 import com.jkzz.smart_mines.communication.net.CommunicationNet;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
 import com.jkzz.smart_mines.utils.CUtil;
 import com.jkzz.smart_mines.utils.VUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +61,8 @@ public class SiemensS7Net implements CommunicationNet {
             OperateResult operateResult = s7Net.ReadInt16("1");
             VUtil.handler(isConn != operateResult.IsSuccess).handler(() -> {
                 VUtil.isTrueOrFalse(operateResult.IsSuccess).trueOrFalseHandler(
-                        () -> log.info("SiemensS7Net长连接设置成功，ip：" + s7Net.getIpAddress()),
-                        () -> log.error("SiemensS7Net连接失败，ip：" + s7Net.getIpAddress() + "，信息：" + operateResult.Message)
+                        () -> log.info("SiemensS7Net长连接设置成功，ip：{}", s7Net.getIpAddress()),
+                        () -> log.error("SiemensS7Net连接失败，ip：{}，信息：{}", s7Net.getIpAddress(), operateResult.Message)
                 );
                 isConn = operateResult.IsSuccess;
             });
@@ -74,7 +74,7 @@ public class SiemensS7Net implements CommunicationNet {
         scheduledFuture.cancel(true);
         VUtil.handler(s7Net.ConnectClose().IsSuccess).handler(() -> {
             isConn = false;
-            log.info("ip：" + s7Net.getIpAddress() + "----->SiemensS7Net关闭连接。");
+            log.info("ip：{}----->SiemensS7Net关闭连接。", s7Net.getIpAddress());
         });
     }
 

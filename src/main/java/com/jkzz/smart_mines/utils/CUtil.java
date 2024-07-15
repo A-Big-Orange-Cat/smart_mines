@@ -6,11 +6,13 @@ import com.jkzz.smart_mines.communication.HslCommunication.ModBus.ModbusTcpNet;
 import com.jkzz.smart_mines.communication.HslCommunication.Profinet.AllenBradley.AllenBradleyNet;
 import com.jkzz.smart_mines.communication.HslCommunication.Profinet.Siemens.SiemensPLCS;
 import com.jkzz.smart_mines.communication.HslCommunication.Profinet.Siemens.SiemensS7Net;
-import com.jkzz.smart_mines.communication.Result.ReadResult;
-import com.jkzz.smart_mines.communication.Result.WriteResult;
-import com.jkzz.smart_mines.utils.utilsInterface.ReadCallback;
-import com.jkzz.smart_mines.utils.utilsInterface.WriteCallback;
+import com.jkzz.smart_mines.communication.result.ReadResult;
+import com.jkzz.smart_mines.communication.result.WriteResult;
+import com.jkzz.smart_mines.utils.utilsinterface.ReadCallback;
+import com.jkzz.smart_mines.utils.utilsinterface.WriteCallback;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.io.Serializable;
 
 public final class CUtil {
 
@@ -41,7 +43,7 @@ public final class CUtil {
         return s7Net;
     }
 
-    public static <T> ReadResult<T> read(String address, Integer length, ReadCallback<T> readCallback) {
+    public static <T extends Serializable> ReadResult<T> read(String address, Integer length, ReadCallback<T> readCallback) {
         if (null == address || address.isEmpty()) {
             return new ReadResult<>(false, null, "读取地址不能为空");
         }

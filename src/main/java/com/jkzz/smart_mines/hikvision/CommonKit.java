@@ -2,18 +2,23 @@ package com.jkzz.smart_mines.hikvision;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Objects;
 
 public class CommonKit {
 
     private static String path;
 
     static {
-        path = (System.getProperty("user.dir") + "\\Application\\lib\\").replaceAll("\\\\", "\\\\\\\\");
+        path = (System.getProperty("user.dir") + "\\Application\\lib\\").replace("\\\\", "\\\\\\\\");
         try {
-            path=URLDecoder.decode(path,"utf-8");
+            path = URLDecoder.decode(path, "utf-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private CommonKit() {
+
     }
 
     /**
@@ -26,13 +31,13 @@ public class CommonKit {
     }
 
     public static void setHikPath() {
-        String libPath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "lib/";
+        String libPath = Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("")).getPath() + "lib/";
         try {
             libPath = URLDecoder.decode(libPath, "utf-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        path = libPath.substring(1).replaceAll("/", "\\\\");
+        path = libPath.substring(1).replace("/", "\\\\");
     }
 
 }

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jkzz.smart_mines.mapper.DeviceTypeRelationMapper;
 import com.jkzz.smart_mines.pojo.domain.DeviceTypeRelation;
 import com.jkzz.smart_mines.service.DeviceTypeRelationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class DeviceTypeRelationServiceImpl extends ServiceImpl<DeviceTypeRelationMapper, DeviceTypeRelation>
         implements DeviceTypeRelationService {
 
-    @Autowired
-    DeviceTypeRelationMapper deviceTypeRelationMapper;
+    private final DeviceTypeRelationMapper deviceTypeRelationMapper;
 
     @Override
     public List<Integer> queryBaseDeviceTypeIdsByDeviceTypeId(Integer deviceTypeId) {

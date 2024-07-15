@@ -28,6 +28,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 public class CommunicationManager {
 
+    private final ApplicationContext context;
+    private final DeviceTypeRelationService deviceTypeRelationService;
+    private final DeviceTypeService deviceTypeService;
+    private final BaseDeviceTypeParameterService baseDeviceTypeParameterService;
+    private final DeviceTypeParameterService deviceTypeParameterService;
+    private final DeviceService deviceService;
+    private final LogSignalService logSignalService;
     /**
      * monitor管理者的集合
      */
@@ -40,20 +47,17 @@ public class CommunicationManager {
      * 设备的实时简略数据结果
      */
     private final JSONObject devicesSimpleResultMap = new JSONObject();
+
     @Autowired
-    private ApplicationContext context;
-    @Autowired
-    private DeviceTypeRelationService deviceTypeRelationService;
-    @Autowired
-    private DeviceTypeService deviceTypeService;
-    @Autowired
-    private BaseDeviceTypeParameterService baseDeviceTypeParameterService;
-    @Autowired
-    private DeviceTypeParameterService deviceTypeParameterService;
-    @Autowired
-    private DeviceService deviceService;
-    @Autowired
-    private LogSignalService logSignalService;
+    public CommunicationManager(ApplicationContext context, DeviceTypeRelationService deviceTypeRelationService, DeviceTypeService deviceTypeService, BaseDeviceTypeParameterService baseDeviceTypeParameterService, DeviceTypeParameterService deviceTypeParameterService, DeviceService deviceService, LogSignalService logSignalService) {
+        this.context = context;
+        this.deviceTypeRelationService = deviceTypeRelationService;
+        this.deviceTypeService = deviceTypeService;
+        this.baseDeviceTypeParameterService = baseDeviceTypeParameterService;
+        this.deviceTypeParameterService = deviceTypeParameterService;
+        this.deviceService = deviceService;
+        this.logSignalService = logSignalService;
+    }
 
     //@PostConstruct
     public void init() {
@@ -97,12 +101,12 @@ public class CommunicationManager {
      */
     @Async("commThreadPoolExecutor")
     @Scheduled(cron = "0 0 0 L * ?")
-    protected void cleanUpDatabase() {
+    public void cleanUpDatabase() {
         logSignalService.cleanUp();
     }
 
     @Async("commThreadPoolExecutor")
-    protected void createMonitorManager(DeviceType deviceType) {
+    public void createMonitorManager(DeviceType deviceType) {
         MonitorManager monitorManager = (MonitorManager) context.getBean("monitorManager");
         List<Integer> baseDeviceTypeIds = deviceTypeRelationService.queryBaseDeviceTypeIdsByDeviceTypeId(deviceType.getDeviceTypeId());
         // 获取设备的所有信号参数信息
@@ -116,7 +120,6 @@ public class CommunicationManager {
         //
         Map<String, DeviceTypeParameter> deviceTypeParameters = deviceTypeParameterService.queryMapByDeviceTypeId(deviceType.getDeviceTypeId());
 
-        monitorManager.setCommunicationManager(this);
         monitorManager.setCommunicationProtocol(deviceType.getCommunicationProtocol());
         monitorManager.setParametersOfSignal(parametersOfSignal);
         monitorManager.setParametersOfCommand(parametersOfCommand);
@@ -130,20 +133,17 @@ public class CommunicationManager {
         monitorManagerMap.put(deviceType.getDeviceTypeId().toString(), monitorManager);
     }
 
-    @Async("commThreadPoolExecutor")
-    protected void disconnectCommunicationNet(CommunicationNet communicationNet) {
+    private void disconnectCommunicationNet(CommunicationNet communicationNet) {
         communicationNet.disconnect();
     }
 
-    @Async("commThreadPoolExecutor")
-    protected void sendMessage(InfoWebSocket infoWebSocket) {
+    private void sendMessage(InfoWebSocket infoWebSocket) {
         if (null != infoWebSocket) {
             infoWebSocket.sendOneMessage(devicesSimpleResultMap.toJSONString());
         }
     }
 
-    @Async("commThreadPoolExecutor")
-    protected void sendMessage(Monitor monitor) {
+    private void sendMessage(Monitor monitor) {
         monitor.send();
     }
 

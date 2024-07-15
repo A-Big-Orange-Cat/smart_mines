@@ -61,7 +61,7 @@ public class InfoWebSocket {
      */
     @OnError
     public void onError(Throwable error) {
-        log.error("infoWebSocket错误,原因:" + error.getMessage());
+        log.error("infoWebSocket错误,原因:{}", error.getMessage());
     }
 
     /**

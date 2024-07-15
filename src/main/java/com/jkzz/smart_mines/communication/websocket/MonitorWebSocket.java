@@ -7,7 +7,6 @@ import com.jkzz.smart_mines.enumerate.impl.AppExceptionCodeMsg;
 import com.jkzz.smart_mines.exception.AppException;
 import com.jkzz.smart_mines.hikvision.PreviewUntil;
 import com.jkzz.smart_mines.pojo.domain.DeviceDvr;
-import com.jkzz.smart_mines.service.DeviceDvrService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,6 @@ public class MonitorWebSocket {
      * 通讯管理者对象
      */
     private static CommunicationManager communicationManager;
-    private static DeviceDvrService deviceDvrService;
     /**
      * monitor
      */
@@ -43,11 +41,6 @@ public class MonitorWebSocket {
     @Autowired
     public void setCommunicationManager(CommunicationManager communicationManager) {
         MonitorWebSocket.communicationManager = communicationManager;
-    }
-
-    @Autowired
-    public void setDeviceDvrService(DeviceDvrService deviceDvrService) {
-        MonitorWebSocket.deviceDvrService = deviceDvrService;
     }
 
     /**
@@ -64,8 +57,6 @@ public class MonitorWebSocket {
                 .map(monitorManager -> monitorManager.getMonitorMap().get(deviceId))
                 .orElseThrow(() -> new AppException(AppExceptionCodeMsg.PLC_MONITOR_NOT_EXIST));
         monitor.getMonitorWebSockets().add(this);
-        //dvrs = deviceDvrService.queryByDeviceId(Integer.valueOf(deviceId));
-        //PreviewUntil.loginAndPicByPlay(dvrs.get(0), monitor);
         //log.info("monitorWebSocket连接成功！");
     }
 
@@ -90,7 +81,7 @@ public class MonitorWebSocket {
      */
     @OnError
     public void onError(Throwable error) {
-        log.error("monitorWebSocket错误,原因:" + error.getMessage());
+        log.error("monitorWebSocket错误,原因:{}", error.getMessage());
     }
 
     /**

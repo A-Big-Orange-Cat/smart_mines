@@ -17,7 +17,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        //corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
@@ -30,7 +29,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String path = System.getProperty("user.dir") + "\\Application\\map\\";
-        path = path.replaceAll("\\\\", "/");
+        path = path.replace("\\\\", "/");
         registry.addResourceHandler("/map/**").addResourceLocations("file:" + path);
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }

@@ -6,7 +6,7 @@ import com.jkzz.smart_mines.enumerate.impl.ParameterTypeEnum;
 import com.jkzz.smart_mines.mapper.BaseDeviceTypeParameterMapper;
 import com.jkzz.smart_mines.pojo.domain.BaseDeviceTypeParameter;
 import com.jkzz.smart_mines.service.BaseDeviceTypeParameterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class BaseDeviceTypeParameterServiceImpl extends ServiceImpl<BaseDeviceTypeParameterMapper, BaseDeviceTypeParameter>
         implements BaseDeviceTypeParameterService {
 
-    @Autowired
-    private BaseDeviceTypeParameterMapper baseDeviceTypeParameterMapper;
+    private final BaseDeviceTypeParameterMapper baseDeviceTypeParameterMapper;
 
     @Override
     public List<BaseDeviceTypeParameter> queryByBaseDeviceTypeId(List<Integer> baseDeviceTypeIds) {

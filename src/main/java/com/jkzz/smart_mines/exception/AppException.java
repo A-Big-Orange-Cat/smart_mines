@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AppException extends RuntimeException {
 
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     public AppException(AppExceptionCodeMsg appExceptionCodeMsg) {
         this.code = appExceptionCodeMsg.getCode();

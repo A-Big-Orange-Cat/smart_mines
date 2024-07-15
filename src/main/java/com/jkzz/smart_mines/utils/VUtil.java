@@ -1,15 +1,19 @@
 package com.jkzz.smart_mines.utils;
 
 import com.jkzz.smart_mines.exception.AppException;
-import com.jkzz.smart_mines.utils.utilsInterface.BranchHandler;
-import com.jkzz.smart_mines.utils.utilsInterface.HandlerFunction;
-import com.jkzz.smart_mines.utils.utilsInterface.PresentOrElseHandler;
-import com.jkzz.smart_mines.utils.utilsInterface.ThrowExceptionFunction;
+import com.jkzz.smart_mines.utils.utilsinterface.BranchHandler;
+import com.jkzz.smart_mines.utils.utilsinterface.HandlerFunction;
+import com.jkzz.smart_mines.utils.utilsinterface.PresentOrElseHandler;
+import com.jkzz.smart_mines.utils.utilsinterface.ThrowExceptionFunction;
 
 public final class VUtil {
 
+    private VUtil() {
+
+    }
+
     public static ThrowExceptionFunction isTrue(boolean b) {
-        return (appExceptionCodeMsg) -> {
+        return appExceptionCodeMsg -> {
             if (b) {
                 throw new AppException(appExceptionCodeMsg);
             }
@@ -17,7 +21,7 @@ public final class VUtil {
     }
 
     public static HandlerFunction handler(boolean b) {
-        return (handle) -> {
+        return handle -> {
             if (b) {
                 handle.run();
             }

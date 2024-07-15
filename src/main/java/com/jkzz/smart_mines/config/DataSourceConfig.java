@@ -12,7 +12,7 @@ import java.net.URLDecoder;
 @Configuration
 public class DataSourceConfig {
 
-    @Value("${spring.datasource.datasoursename}")
+    @Value("${spring.datasource.datasource_name}")
     private String database;
 
     @Value("${spring.datasource.username}")
@@ -33,7 +33,7 @@ public class DataSourceConfig {
     }
 
     private String getURL() {
-        String path = "jdbc:h2:" + System.getProperty("user.dir").replaceAll("\\\\", "/") + "/Application/h2/" + database;
+        String path = "jdbc:h2:" + System.getProperty("user.dir").replace("\\\\", "/") + "/Application/h2/" + database;
         try {
             return URLDecoder.decode(path, "utf-8");
         } catch (UnsupportedEncodingException e) {

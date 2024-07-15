@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import com.jkzz.smart_mines.enumerate.impl.RoleEnum;
 import com.jkzz.smart_mines.pojo.domain.User;
 import com.jkzz.smart_mines.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,18 +15,17 @@ import java.util.Optional;
  * 自定义权限加载接口实现类
  */
 @Component    // 保证此类被 SpringBoot 扫描，完成 Sa-Token 的自定义权限验证扩展
+@RequiredArgsConstructor
 public class StpInterfaceImpl implements StpInterface {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     /**
      * 返回一个账号所拥有的权限码集合
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> list = new ArrayList<>();
-        return list;
+        return new ArrayList<>();
     }
 
     /**

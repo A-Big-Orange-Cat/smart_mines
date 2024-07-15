@@ -11,7 +11,7 @@ import com.jkzz.smart_mines.service.LogAlarmService;
 import com.jkzz.smart_mines.service.LogOperationService;
 import com.jkzz.smart_mines.service.LogSignalService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,17 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/log")
 public class LogController {
 
-    @Autowired
-    LogOperationService logOperationService;
+    private final LogOperationService logOperationService;
 
-    @Autowired
-    LogAlarmService logAlarmService;
+    private final LogAlarmService logAlarmService;
 
-    @Autowired
-    LogSignalService logSignalService;
+    private final LogSignalService logSignalService;
 
     /**
      * 分页查询设备的操作记录(每次10条数据)

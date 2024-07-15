@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HIKSDKStructure extends Structure {
+    @Override
     protected List<String> getFieldOrder() {
-        List<String> fieldOrderList = new ArrayList<String>();
+        List<String> fieldOrderList = new ArrayList<>();
         for (Class<?> cls = getClass();
              !cls.equals(HIKSDKStructure.class);
              cls = cls.getSuperclass()) {

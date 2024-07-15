@@ -10,7 +10,7 @@ import com.jkzz.smart_mines.service.DeviceService;
 import com.jkzz.smart_mines.verification.group.DeleteGroup;
 import com.jkzz.smart_mines.verification.group.InsertGroup;
 import com.jkzz.smart_mines.verification.group.UpdateGroup;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,17 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/device")
 public class DeviceController {
 
-    @Autowired
-    CommunicationManager communicationManager;
+    private final CommunicationManager communicationManager;
 
-    @Autowired
-    DeviceService deviceService;
+    private final DeviceService deviceService;
 
-    @Autowired
-    DeviceDvrService deviceDvrService;
+    private final DeviceDvrService deviceDvrService;
 
     /**
      * 添加设备

@@ -4,6 +4,9 @@ import com.jkzz.smart_mines.enumerate.NameValueEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 @AllArgsConstructor
 public enum CommunicationNetEnum implements NameValueEnum<String> {
@@ -17,4 +20,11 @@ public enum CommunicationNetEnum implements NameValueEnum<String> {
 
     private final String name;
 
+    @Override
+    public Map<String, Object> serializer() {
+        Map<String, Object> serializerMap = new HashMap<>();
+        serializerMap.put("name", getName());
+        serializerMap.put("value", getValue());
+        return serializerMap;
+    }
 }

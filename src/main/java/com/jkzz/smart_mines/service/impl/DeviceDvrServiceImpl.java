@@ -8,8 +8,7 @@ import com.jkzz.smart_mines.mapper.DeviceDvrMapper;
 import com.jkzz.smart_mines.pojo.domain.DeviceDvr;
 import com.jkzz.smart_mines.service.DeviceDvrService;
 import com.jkzz.smart_mines.utils.VUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +19,11 @@ import java.util.List;
  * @createDate 2024-07-01 10:10:55
  */
 @Service
+@RequiredArgsConstructor
 public class DeviceDvrServiceImpl extends ServiceImpl<DeviceDvrMapper, DeviceDvr>
         implements DeviceDvrService {
 
-    @Autowired
-    private DeviceDvrMapper deviceDvrMapper;
-
-    @Autowired
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final DeviceDvrMapper deviceDvrMapper;
 
     @Override
     public void insert(DeviceDvr dvr) {

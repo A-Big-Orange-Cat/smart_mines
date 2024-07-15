@@ -35,11 +35,12 @@ public enum ValueTypeEnum implements NameValueEnum<Integer> {
     }
 
     @JsonValue
+    @Override
     public Map<String, Object> serializer() {
-        return new HashMap<String, Object>() {{
-            put("name", getName());
-            put("value", getValue());
-        }};
+        Map<String, Object> serializerMap = new HashMap<>();
+        serializerMap.put("name", getName());
+        serializerMap.put("value", getValue());
+        return serializerMap;
     }
 
 }
