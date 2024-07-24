@@ -11,6 +11,9 @@ public enum AppExceptionCodeMsg {
     SYSTEM_INVALID_ACTIVATION_CODE(1000, "激活码无效"),
     FAILURE_ACTIVATION(1000, "激活失败，请重试"),
 
+    ERR_SYSTEM(500, "系统异常"),
+    QUIVER_REDIS_PREFIX_ERROR(500, "防重复提交注解前缀不能为空"),
+    QUIVER_FREQUENT(500, "您点击的太快了，请先休息一下吧～～"),
     ERROR_DATA_TYPE(500, "数据类型错误"),
 
     FAILURE_INSERT(500, "添加失败"),

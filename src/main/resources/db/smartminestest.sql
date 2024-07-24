@@ -699,6 +699,11 @@ VALUES (1, 1),
        (9, 7),
        (10, 8),
        (11, 9);
+DROP TABLE IF EXISTS `lock_table`;
+CREATE TABLE `lock_table`
+(
+    `lock_key` varchar(255) NOT NULL
+);
 DROP TABLE IF EXISTS `log_alarm`;
 CREATE TABLE `log_alarm`
 (
