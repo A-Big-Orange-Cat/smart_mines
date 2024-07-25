@@ -138,9 +138,7 @@ public class VidePreview {
                 Integer lUserId = MyBlockingQueue.LPlayIdToLUserIdMap.get(lRealHandle);
                 BlockingQueue<byte[]> blockingQueue = MyBlockingQueue.bpMap.get(lUserId);
                 // 将当前的某一路视频通道的上一个Rtp包放到队列中去
-                if (!blockingQueue.offer(allEsBytes)) {
-                    log.error("将RTP包放到推流队列时失败");
-                }
+                blockingQueue.offer(allEsBytes);
                 allEsBytes = null;
                 // 置空当前通道的RTP包，下次回调就是pes包进行取流追加
                 esBytesMap.put(lRealHandle, allEsBytes);
