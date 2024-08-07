@@ -12,10 +12,12 @@
       <div class="content-box">
         <img :src="windowType == 'louvre' ? window_louvre: window_slide" class="window-img" />
         <div class="window-info">
-          <div class="button-operate button-blue" @click="operateInstruct(`FC_CZ_OPEN${windowInfo.id}`, 1)">启动风窗</div>
-          <div class="button-operate button-red" @click="operateInstruct(`FC_CZ_CLOSE${windowInfo.id}`, 1)">关闭风窗</div>
+          <div class="button-operate button-blue" v-if="windowType == 'louvre'"
+            @click="operateInstruct(`FC_CZ_OPEN${windowInfo.id}`, 1)">启动风窗</div>
+          <div class="button-operate button-red" v-if="windowType == 'louvre'"
+            @click="operateInstruct(`FC_CZ_CLOSE${windowInfo.id}`, 1)">关闭风窗</div>
           <div class="button-operate button-blue" @click="openParam">参数设置</div>
-          <div class="window-text" v-if="windowType == 'louvre'" >风窗角度：{{ windowSignal }}</div>
+          <div class="window-text" v-if="windowType == 'louvre'">风窗角度：{{ windowSignal }}</div>
           <div class="window-text" v-if="windowType == 'slide'">风窗长度：{{ windowLength }}</div>
         </div>
 
@@ -121,8 +123,8 @@ export default {
       }
     },
     changeWindowSlide(newVal, oldVal) {
-      var new_index = newVal >= 90 ? 8 : Math.ceil(Number(newVal) / 15) + 1
-      var old_index = oldVal >= 90 ? 8 : Math.ceil(Number(oldVal) / 15) + 1
+      var new_index = newVal >= 800 ? 8 : Math.ceil(Number(newVal) / 133) + 1
+      var old_index = oldVal >= 800 ? 8 : Math.ceil(Number(oldVal) / 133) + 1
       console.log('new_index:', new_index, "old_index:", old_index)
       // var img = document.getElementById("img");
       if (oldVal) {

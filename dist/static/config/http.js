@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 
 // axios 配置
 axios.defaults.timeout = 8000;
-// axios.defaults.baseURL = 'http://192.168.11.11:8090'; // 127.0.0.1 // 192.168.11.11
+// axios.defaults.baseURL = 'http://192.168.11.11:8080'; // 127.0.0.1 // 192.168.11.11
 axios.defaults.baseURL = ''
 
 // http request 拦截器
