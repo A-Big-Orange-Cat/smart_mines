@@ -84,10 +84,10 @@
         <div class="countdown-b" v-show="paramSignal.FM_XH_EDYS != '0'">{{ paramSignal.FM_XH_EDYS }}</div>
         <!-- 风窗信息 -->
         <div class="desc-list">
-          <div>A风窗1角度：{{ paramSignal.FC_XH_JD1 }}度</div>
-          <div>A风窗2角度：{{ paramSignal.FC_XH_JD2 }}度</div>
-          <div>B风窗3角度：{{ paramSignal.FC_XH_JD3 }}度</div>
-          <div>B风窗4角度：{{ paramSignal.FC_XH_JD4 }}度</div>
+          <div>A风窗1长度：{{ paramSignal.FC_XH_CD1 }}毫米</div>
+          <div>A风窗2长度：{{ paramSignal.FC_XH_CD2 }}毫米</div>
+          <div>B风窗3长度：{{ paramSignal.FC_XH_CD3 }}毫米</div>
+          <div>B风窗4长度：{{ paramSignal.FC_XH_CD4 }}毫米</div>
         </div>
       </div>
       <div class="operate-layout">
@@ -220,8 +220,8 @@
       :visible.sync="windowVisible"
       :windowInfo="windowInfo"
       :paramSignal="paramSignal"
-      windowType="louvre"
-    ></window-modal> <!-- 百叶风窗 -->
+      windowType="slide"
+    ></window-modal> <!-- 推拉风窗 -->
   </div>
 </template>
 
@@ -232,7 +232,7 @@ import HistoryModal from '../modal/HistoryModal.vue'
 import WindowModal from '../modal/WindowModal.vue'
 import JMuxer from 'jmuxer'
 export default {
-  name: "DamperWindowInfo",
+  name: "DamperWindowSlide",
   components: {
     ParamModal,
     HistoryModal,
@@ -416,6 +416,7 @@ export default {
     },
 
     startPlay() {
+      if (this.cameraList.length > 0) {
       this.cameraList.map((item, index) => {
         // let ip = this.$http.defaults.baseURL.replace('http', 'ws');
         let ip = JSON.parse(localStorage.getItem('system')).websocketURL;
@@ -451,7 +452,7 @@ export default {
         }
         this.socketList.push(socket)
       })
-
+      }
     },
     videoPlay() {
       const videos = document.querySelectorAll("video");   //获取所有video标签

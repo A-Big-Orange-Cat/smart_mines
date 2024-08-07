@@ -269,13 +269,25 @@
         </el-select>
       </el-form-item>
     </el-form>
-    <!-- 风门带风窗 - 风窗参数设置 -->
-    <el-form :ref="deviceType" class="form" v-if="deviceType == 'window'" :model="window_form" label-position="left">
+    <!-- 风门带风窗 - 风窗参数设置 - 百叶 -->
+    <el-form :ref="deviceType" class="form" v-if="deviceType == 'louvre'" :model="window_form" label-position="left">
       <el-form-item label="设置风窗角度" prop="wind_angle">
         <el-input v-model="window_form.wind_angle" type="number" min="0" placeholder="请输入风窗角度"></el-input>
       </el-form-item>
       <el-form-item label="设置风窗自动" prop="is_automatic">
         <el-select v-model="window_form.is_automatic" placeholder="请选择类型" style="width: 100%">
+          <el-option label="手动" value="false"></el-option>
+          <el-option label="自动" value="true"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <!-- 风门带风窗 - 风窗参数设置 - 推拉 -->
+    <el-form :ref="deviceType" class="form" v-if="deviceType == 'slide'" :model="slide_form" label-position="left">
+      <el-form-item label="设置风窗长度" prop="wind_length">
+        <el-input v-model="slide_form.wind_length" type="number" min="0" placeholder="请输入风窗长度"></el-input>
+      </el-form-item>
+      <el-form-item label="设置风窗自动" prop="is_automatic">
+        <el-select v-model="slide_form.is_automatic" placeholder="请选择类型" style="width: 100%">
           <el-option label="手动" value="false"></el-option>
           <el-option label="自动" value="true"></el-option>
         </el-select>
@@ -486,6 +498,10 @@ export default {
         wind_angle: undefined,
         is_automatic: undefined,
       },
+      slide_form: {
+        wind_length: undefined,
+        is_automatic: undefined,
+      },
       pithead_form: {
         door_delay: "",
         pinch_delay: "",
@@ -603,10 +619,14 @@ export default {
             this.damper_window_form.sensor_mode = this.paramsData.FM_CS_CGQXHFS
             break;
 
-          case 'window':
+          case 'louvre':
             this.window_form.wind_angle = this.paramsData[`FC_CS_JD${this.windowIndex}`]
             this.window_form.is_automatic = this.paramsData[`FC_CS_ZD${this.windowIndex}`]
             break;
+
+          case 'slide':
+            this.slide_form.wind_length = this.paramsData[`FC_CS_CD${this.windowIndex}`]
+            this.slide_form.is_automatic = this.paramsData[`FC_CS_ZD${this.windowIndex}`]
 
           case 'pithead':
             this.pithead_form.door_delay = this.paramsData.FFM_CS_FMYS
@@ -782,12 +802,21 @@ export default {
           }
           break;
 
-        case 'window':
+        case 'louvre':
           if(this.window_form.wind_angle != this.paramsData[`FC_CS_JD${this.windowIndex}`]) {
             obj[`FC_CS_JD${this.windowIndex}`] = this.window_form.wind_angle
           }
           if (this.window_form.is_automatic != this.paramsData[`FC_CS_ZD${this.windowIndex}`]) {
             obj[`FC_CS_ZD${this.windowIndex}`] = this.window_form.is_automatic
+          }
+          break;
+
+        case 'slide':
+          if(this.slide_form.wind_length != this.paramsData[`FC_CS_CD${this.windowIndex}`]) {
+            obj[`FC_CS_CD${this.windowIndex}`] = this.slide_form.wind_length
+          }
+          if (this.slide_form.is_automatic != this.paramsData[`FC_CS_ZD${this.windowIndex}`]) {
+            obj[`FC_CS_ZD${this.windowIndex}`] = this.slide_form.is_automatic
           }
           break;
 

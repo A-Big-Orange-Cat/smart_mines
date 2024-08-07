@@ -54,6 +54,12 @@
           :paramSignal="paramSignal"
           :switchLog="switchLog"
         ></damper-window-info>
+        <!-- 风门带风窗 推拉 -->
+        <damper-window-slide ref="3" v-if="deviceTypeId == '3'"
+          :cameraList="cameraList"
+          :paramSignal="paramSignal"
+          :switchLog="switchLog"
+        ></damper-window-slide>
         <!-- 副井口风门 -->
         <damper-pithead ref="11" v-if="deviceTypeId == '11'"
           :cameraList="cameraList"
@@ -98,6 +104,7 @@ import MainLaneInfo from '../components/detail/MainLaneInfo.vue'
 import MineInfo from '../components/detail/MineInfo.vue'
 import DamperWindowInfo from '../components/detail/DamperWindowInfo.vue'
 import DamperPithead from '../components/detail/DamperPithead.vue'
+import DamperWindowSlide from '../components/detail/DamperWindowSlide.vue'
 
 export default {
   components: {
@@ -109,7 +116,8 @@ export default {
     MainLaneInfo,
     MineInfo,
     DamperWindowInfo,
-    DamperPithead
+    DamperPithead,
+    DamperWindowSlide
   },
   name: "DeviceDetail",
   data() {

@@ -10,12 +10,13 @@
       @update:visible="updateVisible"
     >
       <div class="content-box">
-        <img :src="window_url" class="window-img" />
+        <img :src="windowType == 'louvre' ? window_louvre: window_slide" class="window-img" />
         <div class="window-info">
           <div class="button-operate button-blue" @click="operateInstruct(`FC_CZ_OPEN${windowInfo.id}`, 1)">启动风窗</div>
           <div class="button-operate button-red" @click="operateInstruct(`FC_CZ_CLOSE${windowInfo.id}`, 1)">关闭风窗</div>
           <div class="button-operate button-blue" @click="openParam">参数设置</div>
-          <div class="window-text">风窗角度：{{ windowSignal }}</div>
+          <div class="window-text" v-if="windowType == 'louvre'" >风窗角度：{{ windowSignal }}</div>
+          <div class="window-text" v-if="windowType == 'slide'">风窗长度：{{ windowLength }}</div>
         </div>
 
       </div>
@@ -23,7 +24,7 @@
 
     <param-modal
       :visible.sync="paramVisible"
-      deviceType="window"
+      :deviceType="windowType"
       :windowIndex="windowInfo.id"
     ></param-modal>
   </div>
@@ -46,24 +47,36 @@ export default {
     windowInfo: {
       type: Object,
       default: () => ({})
-    }
+    },
+    windowType: String
   },
   data () {
     return {
       paramVisible: false,
-      window_url: require('../../../static/images/layout/wind_1.png')
+      window_louvre: require('../../../static/images/layout/wind_1.png'),
+      window_slide: require('../../../static/images/layout/window_slide1.png'),
     }
   },
   computed: {
     windowSignal() {
       return this.paramSignal[`FC_XH_JD${this.windowInfo.id}`]
+    },
+    windowLength() {
+      return this.paramSignal[`FC_XH_CD${this.windowInfo.id}`]
     }
   },
   watch: {
     'windowSignal': {
       handler(newVal, oldVal) {
         this.$nextTick(() => {
-          this.changeWindow(newVal, oldVal)
+          this.changeWindowLouvre(newVal, oldVal)
+        })
+      }
+    },
+    'windowLength': {
+      handler(newVal, oldVal) {
+        this.$nextTick(() => {
+          this.changeWindowSlide(newVal, oldVal)
         })
       }
     }
@@ -79,23 +92,24 @@ export default {
       this.paramVisible = true
     },
     // 处理风窗动画
-    changeWindow(newVal, oldVal) {
-      var new_index = newVal == 90 ? 8 : Math.ceil(Number(newVal) / 15) + 1
-      var old_index = oldVal == 90 ? 8 : Math.ceil(Number(oldVal) / 15) + 1
+    changeWindowLouvre(newVal, oldVal) {
+      var new_index = newVal >= 90 ? 8 : Math.ceil(Number(newVal) / 15) + 1
+      var old_index = oldVal >= 90 ? 8 : Math.ceil(Number(oldVal) / 15) + 1
+      console.log('new_index:', new_index, "old_index:", old_index)
       // var img = document.getElementById("img");
       if (oldVal) {
         if (new_index != old_index) {
           var i = old_index;
           if (old_index < new_index) {
             var timer = setInterval(() => {
-              this.window_url = require(`../../../static/images/layout/wind_${++i}.png`)
+              this.window_louvre = require(`../../../static/images/layout/wind_${++i}.png`)
               if (i == new_index) {
                 clearInterval(timer)
               }
             }, 300)
           } else {
             var timer = setInterval(() => {
-              this.window_url = require(`../../../static/images/layout/wind_${--i}.png`)
+              this.window_louvre = require(`../../../static/images/layout/wind_${--i}.png`)
               if (i == new_index) {
                 clearInterval(timer)
               }
@@ -103,7 +117,35 @@ export default {
           }
         }
       } else {
-        this.window_url = require(`../../../static/images/layout/wind_${new_index}.png`)
+        this.window_louvre = require(`../../../static/images/layout/wind_${new_index}.png`)
+      }
+    },
+    changeWindowSlide(newVal, oldVal) {
+      var new_index = newVal >= 90 ? 8 : Math.ceil(Number(newVal) / 15) + 1
+      var old_index = oldVal >= 90 ? 8 : Math.ceil(Number(oldVal) / 15) + 1
+      console.log('new_index:', new_index, "old_index:", old_index)
+      // var img = document.getElementById("img");
+      if (oldVal) {
+        if (new_index != old_index) {
+          var i = old_index;
+          if (old_index < new_index) {
+            var timer = setInterval(() => {
+              this.window_slide = require(`../../../static/images/layout/window_slide${++i}.png`)
+              if (i == new_index) {
+                clearInterval(timer)
+              }
+            }, 300)
+          } else {
+            var timer = setInterval(() => {
+              this.window_slide = require(`../../../static/images/layout/window_slide${--i}.png`)
+              if (i == new_index) {
+                clearInterval(timer)
+              }
+            }, 300)
+          }
+        }
+      } else {
+        this.window_slide = require(`../../../static/images/layout/window_slide${new_index}.png`)
       }
     },
     // 操作指令
