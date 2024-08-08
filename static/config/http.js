@@ -29,7 +29,6 @@ let flag = 0;
 axios.interceptors.response.use(
   response => {
     if (response.data.code === 401) {
-      console.log('666666', flag);
       if (flag++ == 0) {
         setTimeout(() => {
           flag = 0

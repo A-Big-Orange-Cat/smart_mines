@@ -97,7 +97,6 @@ export default {
     changeWindowLouvre(newVal, oldVal) {
       var new_index = newVal >= 90 ? 8 : Math.ceil(Number(newVal) / 15) + 1
       var old_index = oldVal >= 90 ? 8 : Math.ceil(Number(oldVal) / 15) + 1
-      console.log('new_index:', new_index, "old_index:", old_index)
       // var img = document.getElementById("img");
       if (oldVal) {
         if (new_index != old_index) {
@@ -125,7 +124,6 @@ export default {
     changeWindowSlide(newVal, oldVal) {
       var new_index = newVal >= 800 ? 8 : Math.ceil(Number(newVal) / 133) + 1
       var old_index = oldVal >= 800 ? 8 : Math.ceil(Number(oldVal) / 133) + 1
-      console.log('new_index:', new_index, "old_index:", old_index)
       // var img = document.getElementById("img");
       if (oldVal) {
         if (new_index != old_index) {

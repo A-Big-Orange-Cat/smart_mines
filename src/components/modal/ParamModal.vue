@@ -284,8 +284,7 @@
     <!-- 风门带风窗 - 风窗参数设置 - 推拉 -->
     <el-form :ref="deviceType" class="form" v-if="deviceType == 'slide'" :model="slide_form" label-position="left">
       <el-form-item label="设置风窗长度" prop="wind_length">
-        <el-input v-model="slide_form.wind_length" type="number" min="0" placeholder="请输入风窗长度"
-          @blur="handleBlur">
+        <el-input v-model="slide_form.wind_length" type="number" min="0" placeholder="请输入风窗长度">
         </el-input>
       </el-form-item>
     </el-form>
@@ -638,23 +637,6 @@ export default {
       }
     },
 
-    async handleBlur() {
-      var obj = {}
-      if(this.slide_form.wind_length != this.paramsData[`FC_CS_CD${this.windowIndex}`]) {
-        obj[`FC_CS_CD${this.windowIndex}`] = this.slide_form.wind_length
-      }
-      if (JSON.stringify(obj) != '{}') {
-        try {
-          const res = await this.$http.post('/monitor/updateParameterValues', {
-            deviceId: Number(this.$route.params.deviceId),
-            deviceTypeId: Number(this.$route.params.deviceTypeId),
-            codesAndValues: obj
-          })
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    },
     // 按设备类型id和设备id更新设备的参数设置的值接口
     async updateParaSettingValues() {
       var obj = {}
@@ -823,7 +805,9 @@ export default {
           break;
 
         case 'slide':
-          obj[`FC_CZ_OPEN${this.windowIndex}`] = 1
+          if(this.slide_form.wind_length != this.paramsData[`FC_CS_CD${this.windowIndex}`]) {
+            obj[`FC_CS_CD${this.windowIndex}`] = this.slide_form.wind_length
+          }
           break;
 
         case 'pithead':
